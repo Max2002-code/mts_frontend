@@ -6,11 +6,13 @@ import { Location } from '../models/location.model';
 })
 export class LocationsService {
 
-  private locations: Location[] = [
-    { id: 1, sector: 'A', shelf: '1', level: '1', books: ['Harry Potter', 'Dune'] },
-    { id: 2, sector: 'B', shelf: '2', level: '3', books: ['Il Signore degli Anelli'] },
-    { id: 3, sector: 'C', shelf: '3', level: '2', books: ['Angular', 'TypeScript'] }
-  ];
+private locations: Location[] = [
+  { id: 1, sector: 'A', shelf: '1', level: '1', books: ['Harry Potter', 'Dune'] },
+  { id: 2, sector: 'B', shelf: '2', level: '3', books: ['Il Signore degli Anelli'] },
+  { id: 3, sector: 'C', shelf: '3', level: '2', books: ['Angular', 'TypeScript'] },
+  { id: 4, sector: 'D', shelf: '4', level: '1', books: ['1984', 'Il Piccolo Principe'] } // <-- aggiunto
+];
+
 
   findBook(title: string): Location | null {
     const search = title.trim().toLowerCase();

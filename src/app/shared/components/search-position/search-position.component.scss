@@ -1,13 +1,80 @@
 .search-container {
-  margin: 20px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
 }
 
-.search-card, .result-card {
-  padding: 15px;
+.left-panel {
+  flex: 1;
+  min-width: 320px;
+}
+
+.right-panel {
+  flex: 2;
+  min-width: 320px;
+}
+
+.full-width {
+  width: 100%;
+}
+
+/* CARDS */
+.elevated {
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+/* SEARCH */
+.search-card button {
+  margin-top: 12px;
+}
+
+.no-results {
+  margin-top: 12px;
+  color: #e53935;
+  font-size: 0.9rem;
+}
+
+/* ALTRI LIBRI */
+.other-books {
+  margin-top: 32px;
+
+  h3 {
+    margin-bottom: 16px;
+    font-weight: 500;
+  }
+}
+
+.book-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.book-card.modern {
+  transition: all 0.25s ease;
+  border-radius: 12px;
+  cursor: pointer;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.book-avatar {
+  font-size: 22px;
+  background: #f1f3f6;
+  color: #3f51b5;
 }
 
 mat-card-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+/* POSIZIONE */
+.result-card p {
+  font-size: 0.95rem;
+  margin: 6px 0;
 }

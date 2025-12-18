@@ -1,16 +1,63 @@
 <div class="home-container">
 
-  <mat-card class="home-card" routerLink="/movements">
-    <mat-card-title>🔀 Tracciamento </mat-card-title>
-    <mat-card-content>
-      Sposta i libri tra le diverse posizioni del magazzino.
-    </mat-card-content>
-  </mat-card>
+  <!-- HERO -->
+  <section class="hero">
+    <h1>📚 Gestione Biblioteca</h1>
+    <p>Trova libri, verifica la posizione e traccia i movimenti in tempo reale</p>
+  </section>
 
-  <mat-card class="home-card" routerLink="/search">
-    <mat-card-title>🔍 Cerca Libro</mat-card-title>
-    <mat-card-content>
-      Cerca rapidamente dove si trova un libro nel magazzino.
-    </mat-card-content>
-  </mat-card>
+  <!-- AZIONI PRINCIPALI -->
+  <section class="actions">
+    <mat-card class="action-card" (click)="goToSearch()">
+      <mat-icon>search</mat-icon>
+      <h3>Cerca libro</h3>
+      <p>Trova rapidamente la posizione di un libro</p>
+      <button mat-raised-button color="primary">Vai</button>
+    </mat-card>
+
+    <mat-card class="action-card" (click)="goToMovements()">
+      <mat-icon>swap_horiz</mat-icon>
+      <h3>Movimenti</h3>
+      <p>Gestisci spostamenti e aggiornamenti</p>
+      <button mat-raised-button color="warn">Vai</button>
+    </mat-card>
+  </section>
+
+  <!-- QUICK STATS -->
+  <section class="stats">
+    <mat-card class="stat-card">
+      <mat-icon>menu_book</mat-icon>
+      <div>
+        <h2>120</h2>
+        <span>Libri</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon>local_shipping</mat-icon>
+      <div>
+        <h2>8</h2>
+        <span>In transito</span>
+      </div>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <mat-icon>location_on</mat-icon>
+      <div>
+        <h2>4</h2>
+        <span>Settori</span>
+      </div>
+    </mat-card>
+  </section>
+
+  <!-- ULTIME ATTIVITÀ -->
+  <section class="activity">
+    <h3>🕒 Ultime attività</h3>
+    <mat-list>
+      <mat-list-item>📦 <strong>1984</strong> → Arrivato oggi</mat-list-item>
+      <mat-list-item>📍 <strong>Harry Potter</strong> → Spostato in settore B</mat-list-item>
+      <mat-list-item>📖 <strong>Il Piccolo Principe</strong> → In prestito</mat-list-item>
+    </mat-list>
+  </section>
+
 </div>

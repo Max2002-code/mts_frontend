@@ -12,6 +12,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatListModule } from '@angular/material/list';
+
 
 
 // Componenti
@@ -45,7 +48,9 @@ import { HomeComponent } from './features/home/home.component';
     MatSelectModule,
     LocationsModule,
     SearchModule,
-    MovementsModule
+    MovementsModule,
+    MatIconModule,
+    MatListModule
   ],
   bootstrap: [AppComponent]
 })

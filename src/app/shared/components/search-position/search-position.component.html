@@ -1,27 +1,53 @@
-<div class="search-container" style="display: flex; gap: 20px;">
+<div class="search-container">
 
-  <!-- Colonna sinistra: input ricerca -->
-  <div style="flex: 1;">
-    <mat-card class="search-card">
-      <mat-card-title>Cerca libro</mat-card-title>
+  <!-- SINISTRA -->
+  <div class="left-panel">
+    <mat-card class="search-card elevated">
+      <mat-card-title>🔍 Cerca libro</mat-card-title>
       <mat-card-content>
-        <mat-form-field appearance="fill" style="width: 100%;">
-          <mat-label>Inserisci il titolo del libro</mat-label>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Titolo libro</mat-label>
           <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" (click)="search()">Cerca</button>
+        <button mat-raised-button color="primary" class="full-width" (click)="search()">
+          Cerca
+        </button>
 
-        <div *ngIf="searched && !result" style="margin-top: 10px; color: red;">
-          <p>Libro non trovato</p>
+        <div *ngIf="searched && !result" class="no-results">
+          Libro non trovato
         </div>
       </mat-card-content>
     </mat-card>
+
+    <!-- ALTRI LIBRI -->
+    <div class="other-books">
+      <h3>📚 Altri libri</h3>
+
+      <div class="book-cards-container">
+        <mat-card class="book-card modern" *ngFor="let book of otherBooks">
+          <mat-card-header>
+            <div mat-card-avatar class="book-avatar">📖</div>
+            <mat-card-title>{{ book.title }}</mat-card-title>
+          </mat-card-header>
+
+          <mat-card-actions align="end">
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="selectBook(book.title)"
+            >
+              Vedi posizione
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    </div>
   </div>
 
-  <!-- Colonna destra: posizione libro -->
-  <div style="flex: 2;" *ngIf="result">
-    <mat-card class="result-card">
+  <!-- DESTRA -->
+  <div class="right-panel" *ngIf="result">
+    <mat-card class="result-card elevated">
       <mat-card-title>📍 Posizione libro</mat-card-title>
       <mat-card-content>
         <p><strong>Settore:</strong> {{ result.sector }}</p>
@@ -30,4 +56,5 @@
       </mat-card-content>
     </mat-card>
   </div>
+
 </div>

@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
 
 import { MovementTrackingComponent } from './components/movement-tracking/movement-tracking.component';
 import { SearchPositionComponent } from './components/search-position/search-position.component';
@@ -26,7 +27,8 @@ import { SearchPositionComponent } from './components/search-position/search-pos
     MatInputModule,
     MatListModule,
     MatDatepickerModule,
-    MatNativeDateModule
+    MatNativeDateModule,
+     MatIconModule
   ],
   exports: [
     MovementTrackingComponent,
