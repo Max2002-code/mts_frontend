@@ -1,0 +1,52 @@
+<div class="tracking-dashboard">
+  <!-- Colonna sinistra: ricerca libro -->
+  <div class="left-panel">
+    <mat-card class="search-card">
+      <mat-card-title>🔍 Cerca libro</mat-card-title>
+      <mat-form-field appearance="fill" class="full-width">
+        <mat-label>Titolo libro</mat-label>
+        <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
+      </mat-form-field>
+      <button mat-raised-button color="primary" (click)="search()">Cerca</button>
+
+      <div *ngIf="searched && !movement" class="no-results">
+        <p>Libro non trovato.</p>
+      </div>
+    </mat-card>
+  </div>
+
+  <!-- Colonna destra: stato libro e cronologia -->
+  <div class="right-panel" *ngIf="movement">
+    <mat-card class="book-card">
+      <mat-card-header>
+        <mat-card-title>{{ movement.bookTitle }}</mat-card-title>
+        <mat-card-subtitle [ngClass]="{
+          'in-transit': movement.status === 'In Transito',
+          'available': movement.status === 'Disponibile',
+          'on-loan': movement.status === 'In Prestito',
+          'arrived': movement.status === 'Arrivato'
+        }">{{ movement.status }}</mat-card-subtitle>
+      </mat-card-header>
+
+      <mat-card-content>
+        <h4>Cronologia</h4>
+        <mat-list *ngIf="movement.history?.length; else noHistory">
+          <mat-list-item *ngFor="let h of movement.history">
+            <strong>{{ h.date | date: 'dd/MM/yyyy' }}:</strong> {{ h.description }}
+          </mat-list-item>
+        </mat-list>
+        <ng-template #noHistory>
+          <p>Nessuna cronologia disponibile.</p>
+        </ng-template>
+      </mat-card-content>
+
+      <mat-card-content>
+        <mat-form-field appearance="fill">
+          <mat-label>Data arrivo</mat-label>
+          <input matInput type="date" [(ngModel)]="arrivalInput">
+        </mat-form-field>
+        <button mat-raised-button color="accent" (click)="setArrival()">Aggiorna data</button>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

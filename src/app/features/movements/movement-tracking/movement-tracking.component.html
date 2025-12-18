@@ -1,0 +1,29 @@
+<mat-card>
+  <mat-form-field appearance="fill">
+    <mat-label>Cerca libro</mat-label>
+    <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter" />
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="search()">Cerca</button>
+
+  <div *ngIf="searched && !movement">
+    <p>Libro non trovato.</p>
+  </div>
+
+  <mat-card *ngIf="movement">
+    <mat-card-title>{{ movement.bookTitle }}</mat-card-title>
+    <mat-card-subtitle>{{ movement.status }}</mat-card-subtitle>
+
+    <mat-card-content *ngIf="movement.history.length > 0">
+      <mat-list>
+        <mat-list-item *ngFor="let h of movement.history">
+          <strong>{{ h.date }}:</strong> {{ h.description }}
+        </mat-list-item>
+      </mat-list>
+    </mat-card-content>
+
+    <mat-card-content *ngIf="movement.history.length === 0">
+      <p>Nessuna cronologia disponibile.</p>
+    </mat-card-content>
+  </mat-card>
+</mat-card>

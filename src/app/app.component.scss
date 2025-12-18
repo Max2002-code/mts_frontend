@@ -1,0 +1,54 @@
+/* Toolbar */
+.main-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  display: flex;
+  align-items: center;
+  padding: 0 20px;
+
+  .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+  }
+
+  button {
+    margin-left: 15px;
+    font-weight: 500;
+    transition: background-color 0.3s, transform 0.2s;
+
+    &:hover {
+      background-color: rgba(255,255,255,0.2);
+      transform: translateY(-2px);
+    }
+  }
+
+  .active-link {
+    border-bottom: 2px solid #fff;
+  }
+
+  .spacer {
+    flex: 1 1 auto;
+  }
+}
+
+/* Main content */
+.main-content {
+  padding: 30px;
+  background-color: #f9f9f9;
+  min-height: calc(100vh - 64px); // toolbar height
+}
+
+/* Responsive mobile */
+@media (max-width: 768px) {
+  .main-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+    height: auto;
+    button {
+      margin-left: 0;
+      margin-top: 5px;
+    }
+  }
+}

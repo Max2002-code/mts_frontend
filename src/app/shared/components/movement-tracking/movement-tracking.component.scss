@@ -1,0 +1,48 @@
+.tracking-dashboard {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+
+  .left-panel {
+    flex: 1;
+  }
+
+  .right-panel {
+    flex: 2;
+  }
+
+  .full-width {
+    width: 100%;
+  }
+
+  .book-card {
+    background-color: #f5f5f5;
+    padding: 15px;
+
+    mat-card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+    }
+
+    mat-card-subtitle {
+      font-size: 1rem;
+      font-weight: 500;
+      margin-bottom: 10px;
+      &.available { color: green; }
+      &.in-transit { color: orange; }
+      &.on-loan { color: red; }
+      &.arrived { color: blue; }
+    }
+  }
+
+  .search-card {
+    background-color: #fff;
+    padding: 15px;
+  }
+
+  .no-results {
+    margin-top: 10px;
+    color: red;
+    font-weight: bold;
+  }
+}

@@ -1,0 +1,23 @@
+<mat-card class="search-card">
+  <mat-form-field appearance="fill" class="search-input">
+    <mat-label>Cerca libro</mat-label>
+    <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" (click)="search()">Cerca</button>
+</mat-card>
+
+<div *ngIf="searched && !result" class="no-results">
+  <p>Libro non trovato.</p>
+</div>
+
+<mat-card *ngIf="result" class="book-card">
+  <mat-card-header>
+    <mat-card-title>📚 Libro trovato</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <p><strong>Settore:</strong> {{ result.sector }}</p>
+    <p><strong>Scaffale:</strong> {{ result.shelf }}</p>
+    <p><strong>Livello:</strong> {{ result.level }}</p>
+  </mat-card-content>
+</mat-card>

@@ -1,0 +1,15 @@
+.movement-card {
+  max-width: 500px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.movement-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.btn-submit {
+  align-self: flex-end;
+}
