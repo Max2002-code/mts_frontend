@@ -1,6 +1,6 @@
 <div class="tracking-dashboard">
 
-  <!-- SINISTRA -->
+  <!-- SINISTRA: ricerca libro -->
   <div class="left-panel">
     <mat-card class="search-card elevated">
       <mat-card-title>🔍 Tracciamento libro</mat-card-title>
@@ -10,22 +10,48 @@
         <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
       </mat-form-field>
 
-      <button
-        mat-raised-button
-        color="primary"
-        class="full-width"
-        (click)="search()"
-      >
+      <button mat-raised-button color="primary" class="full-width" (click)="search()">
         Cerca
       </button>
 
-      <div *ngIf="searched && !movement" class="no-results">
-        Libro non trovato
+      <!-- Messaggi informativi sotto il bottone -->
+      <div class="search-feedback" *ngIf="query && !movement">
+        <mat-icon color="warn">info</mat-icon>
+        <span>Non hai ancora selezionato un libro o il titolo non corrisponde a nessuno.</span>
       </div>
+
+      <div class="search-feedback" *ngIf="query && movement">
+        <mat-icon color="primary">check_circle</mat-icon>
+        <span>Libro trovato! Vedi lo stato e la cronologia a destra.</span>
+      </div>
+
+      <!-- Suggerimenti rapidi -->
+      <div class="recent-searches" *ngIf="recentSearches?.length">
+        <mat-icon>history</mat-icon>
+        <span>Ricerche recenti:</span>
+        <div class="recent-items">
+          <button mat-stroked-button color="accent" *ngFor="let r of recentSearches" (click)="query=r; search()">
+            {{ r }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Filtri stato libro -->
+      <div *ngIf="movement" class="status-filters">
+        <mat-label>Filtra cronologia per stato:</mat-label>
+        <mat-select [(ngModel)]="filterStatus" (selectionChange)="onFilterChange()">
+          <mat-option value="Tutti">Tutti</mat-option>
+          <mat-option value="Arrivato">Arrivato</mat-option>
+          <mat-option value="In Transito">In consegna</mat-option>
+          <mat-option value="In Prestito">In prestito</mat-option>
+          <mat-option value="Disponibile">Disponibile</mat-option>
+        </mat-select>
+      </div>
+
     </mat-card>
   </div>
 
-  <!-- DESTRA -->
+  <!-- DESTRA: stato libro e cronologia -->
   <div class="right-panel" *ngIf="movement">
     <mat-card class="book-card elevated">
 
@@ -33,8 +59,7 @@
       <div class="book-header">
         <div>
           <h2>{{ movement.bookTitle }}</h2>
-          <span class="status-badge"
-            [ngClass]="movement.status | lowercase">
+          <span class="status-badge" [ngClass]="movement.status | lowercase">
             {{ movement.status }}
           </span>
         </div>
@@ -44,12 +69,20 @@
       <mat-card-content>
         <h4>📜 Cronologia</h4>
 
-        <div *ngIf="movement.history?.length; else noHistory">
+        <div *ngIf="filteredHistory.length; else noHistory">
           <div class="timeline">
-            <div class="timeline-item" *ngFor="let h of movement.history">
-              <div class="dot"></div>
+            <div class="timeline-item" *ngFor="let h of filteredHistory">
+              <div class="dot" [ngClass]="h.description.toLowerCase()">
+                <ng-container [ngSwitch]="h.description">
+                  <span *ngSwitchCase="'Arrivato'">✅</span>
+                  <span *ngSwitchCase="'In Transito'">🚚</span>
+                  <span *ngSwitchCase="'In Prestito'">📖</span>
+                  <span *ngSwitchDefault>🕒</span>
+                </ng-container>
+              </div>
+
               <div class="content">
-                <strong>{{ h.date | date: 'dd/MM/yyyy' }}</strong>
+                <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong>
                 <p>{{ h.description }}</p>
               </div>
             </div>

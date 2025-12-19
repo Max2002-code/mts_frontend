@@ -44,4 +44,9 @@ export class MovementsService {
 
     return this.movements.find(m => m.bookTitle.toLowerCase().includes(search)) || null;
   }
+
+  getFirstByStatus(status: string): Movement | null {
+  return this.movements.find(m => m.status === status) || null;
+}
+
 }

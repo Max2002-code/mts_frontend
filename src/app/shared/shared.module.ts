@@ -9,14 +9,16 @@ import { MatListModule } from '@angular/material/list';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
-
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSelectModule } from '@angular/material/select';
 import { MovementTrackingComponent } from './components/movement-tracking/movement-tracking.component';
 import { SearchPositionComponent } from './components/search-position/search-position.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
     MovementTrackingComponent,
-    SearchPositionComponent
+    SearchPositionComponent,
   ],
   imports: [
     CommonModule,
@@ -28,11 +30,14 @@ import { SearchPositionComponent } from './components/search-position/search-pos
     MatListModule,
     MatDatepickerModule,
     MatNativeDateModule,
-     MatIconModule
+    MatIconModule,
+    MatChipsModule,
+    RouterModule,
+    MatSelectModule
   ],
   exports: [
     MovementTrackingComponent,
-    SearchPositionComponent
+    SearchPositionComponent,
   ]
 })
 export class SharedModule {}
