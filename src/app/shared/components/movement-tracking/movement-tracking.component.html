@@ -1,44 +1,74 @@
 <div class="tracking-dashboard">
 
-  <!-- SINISTRA: ricerca libro -->
+  <!-- SINISTRA -->
   <div class="left-panel">
     <mat-card class="search-card elevated">
       <mat-card-title>🔍 Tracciamento libro</mat-card-title>
 
+      <!-- AUTOCOMPLETE -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Titolo libro</mat-label>
-        <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
+
+        <input
+          matInput
+          [(ngModel)]="query"
+          (ngModelChange)="onQueryChange($event)"
+          [matAutocomplete]="auto"
+          placeholder="Es. Harry Potter"
+        />
+
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onBookSelected($event.option.value)"
+        >
+          <mat-option
+            *ngFor="let book of filteredBooks"
+            [value]="book"
+          >
+            📘 {{ book }}
+          </mat-option>
+        </mat-autocomplete>
       </mat-form-field>
 
-      <button mat-raised-button color="primary" class="full-width" (click)="search()">
+      <button
+        mat-raised-button
+        color="primary"
+        class="full-width"
+        (click)="search()"
+      >
         Cerca
       </button>
 
-      <!-- Messaggi informativi sotto il bottone -->
-      <div class="search-feedback" *ngIf="query && !movement">
-        <mat-icon color="warn">info</mat-icon>
-        <span>Non hai ancora selezionato un libro o il titolo non corrisponde a nessuno.</span>
+      <!-- FEEDBACK -->
+      <div class="search-feedback error" *ngIf="searched && !movement">
+        <mat-icon>info</mat-icon>
+        <span>Libro non trovato</span>
       </div>
 
-      <div class="search-feedback" *ngIf="query && movement">
-        <mat-icon color="primary">check_circle</mat-icon>
-        <span>Libro trovato! Vedi lo stato e la cronologia a destra.</span>
+      <div class="search-feedback success" *ngIf="movement">
+        <mat-icon>check_circle</mat-icon>
+        <span>Libro trovato</span>
       </div>
 
-      <!-- Suggerimenti rapidi -->
-      <div class="recent-searches" *ngIf="recentSearches?.length">
+      <!-- RICERCHE RECENTI -->
+      <div class="recent-searches" *ngIf="recentSearches.length">
         <mat-icon>history</mat-icon>
         <span>Ricerche recenti:</span>
+
         <div class="recent-items">
-          <button mat-stroked-button color="accent" *ngFor="let r of recentSearches" (click)="query=r; search()">
+          <button
+            mat-stroked-button
+            *ngFor="let r of recentSearches"
+            (click)="onBookSelected(r)"
+          >
             {{ r }}
           </button>
         </div>
       </div>
 
-      <!-- Filtri stato libro -->
-      <div *ngIf="movement" class="status-filters">
-        <mat-label>Filtra cronologia per stato:</mat-label>
+      <!-- FILTRI -->
+      <div class="status-filters" *ngIf="movement">
+        <mat-label>Filtra cronologia:</mat-label>
         <mat-select [(ngModel)]="filterStatus" (selectionChange)="onFilterChange()">
           <mat-option value="Tutti">Tutti</mat-option>
           <mat-option value="Arrivato">Arrivato</mat-option>
@@ -51,40 +81,28 @@
     </mat-card>
   </div>
 
-  <!-- DESTRA: stato libro e cronologia -->
+  <!-- DESTRA -->
   <div class="right-panel" *ngIf="movement">
     <mat-card class="book-card elevated">
 
       <!-- HEADER -->
       <div class="book-header">
-        <div>
-          <h2>{{ movement.bookTitle }}</h2>
-          <span class="status-badge" [ngClass]="movement.status | lowercase">
-            {{ movement.status }}
-          </span>
-        </div>
+        <h2>{{ movement.bookTitle }}</h2>
+        <span class="status-badge" [ngClass]="movement.status | lowercase">
+          {{ movement.status }}
+        </span>
       </div>
 
       <!-- CRONOLOGIA -->
       <mat-card-content>
         <h4>📜 Cronologia</h4>
 
-        <div *ngIf="filteredHistory.length; else noHistory">
-          <div class="timeline">
-            <div class="timeline-item" *ngFor="let h of filteredHistory">
-              <div class="dot" [ngClass]="h.description.toLowerCase()">
-                <ng-container [ngSwitch]="h.description">
-                  <span *ngSwitchCase="'Arrivato'">✅</span>
-                  <span *ngSwitchCase="'In Transito'">🚚</span>
-                  <span *ngSwitchCase="'In Prestito'">📖</span>
-                  <span *ngSwitchDefault>🕒</span>
-                </ng-container>
-              </div>
-
-              <div class="content">
-                <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong>
-                <p>{{ h.description }}</p>
-              </div>
+        <div *ngIf="filteredHistory.length; else noHistory" class="timeline">
+          <div class="timeline-item" *ngFor="let h of filteredHistory">
+            <div class="dot"></div>
+            <div class="content">
+              <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong>
+              <p>{{ h.description }}</p>
             </div>
           </div>
         </div>

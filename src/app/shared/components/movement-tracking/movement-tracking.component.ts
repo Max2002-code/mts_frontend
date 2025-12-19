@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { MovementsService } from 'src/app/core/services/movements.service';
 import { Movement } from 'src/app/core/models/movement.model';
-import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-movement-tracking',
@@ -9,14 +9,28 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./movement-tracking.component.scss']
 })
 export class MovementTrackingComponent implements OnInit {
-  query: string = '';
+
+  query = '';
+  searched = false;
+
   movement: Movement | null = null;
-  searched: boolean = false;
   arrivalInput: string | null = null;
 
-  // Filtri cronologia
-  filterStatus: string = 'Tutti';
+  // Autocomplete
+  books: string[] = [
+    'Harry Potter',
+    'Il Piccolo Principe',
+    '1984',
+    'Il Signore degli Anelli',
+    'Cronache di Narnia'
+  ];
+  filteredBooks: string[] = [];
+
+  // Filtri
+  filterStatus = 'Tutti';
   filteredHistory: any[] = [];
+
+  recentSearches: string[] = [];
 
   constructor(
     private movService: MovementsService,
@@ -24,68 +38,72 @@ export class MovementTrackingComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    // Se c'è parametro nel percorso, cerca subito il libro
     this.route.paramMap.subscribe(params => {
       const title = params.get('title');
       if (title) {
-        this.query = title;
-        this.search();
+        this.onBookSelected(title);
       }
     });
   }
 
-recentSearches: string[] = [];
+  /* AUTOCOMPLETE */
+  onQueryChange(value: string): void {
+    this.filteredBooks = value
+      ? this.books.filter(b =>
+          b.toLowerCase().includes(value.toLowerCase())
+        )
+      : [];
+  }
 
-search(): void {
-  this.movement = this.movService.getMovementByBook(this.query);
-  this.searched = true;
+  onBookSelected(book: string): void {
+    this.query = book;
+    this.filteredBooks = [];
+    this.search();
+  }
 
-  // Aggiungi alla lista delle ricerche recenti senza duplicati
-  if (this.query && !this.recentSearches.includes(this.query)) {
-    this.recentSearches.unshift(this.query);
-    if (this.recentSearches.length > 5) {
-      this.recentSearches.pop(); // mantieni max 5 elementi
+  /* RICERCA */
+  search(): void {
+    this.searched = true;
+    this.movement = this.movService.getMovementByBook(this.query);
+
+    if (this.movement) {
+      this.filteredHistory = this.movement.history ?? [];
+      this.saveRecentSearch();
     }
   }
-}
 
-
-  applyFilter(): void {
+  /* FILTRI */
+  onFilterChange(): void {
     if (!this.movement) return;
 
-    if (this.filterStatus === 'Tutti') {
-      this.filteredHistory = this.movement.history ?? [];
-    } else {
-      this.filteredHistory = (this.movement.history ?? []).filter(
-        h => h.description === this.filterStatus
-      );
-    }
+    this.filteredHistory =
+      this.filterStatus === 'Tutti'
+        ? this.movement.history ?? []
+        : (this.movement.history ?? []).filter(
+            h => h.description === this.filterStatus
+          );
   }
 
-  onFilterChange(): void {
-    this.applyFilter();
-  }
-
+  /* AZIONI */
   setArrival(): void {
     if (!this.movement || !this.arrivalInput) return;
 
-    const arrivalDate = new Date(this.arrivalInput);
     this.movement.status = 'Arrivato';
-
-    if (!this.movement.history) {
-      this.movement.history = [];
-    }
+    this.movement.history ??= [];
 
     this.movement.history.push({
-      date: arrivalDate,
+      date: new Date(this.arrivalInput),
       description: 'Arrivato'
     });
 
     this.arrivalInput = null;
-
-    // Aggiorna filtro dopo inserimento
-    this.applyFilter();
+    this.onFilterChange();
   }
 
-  
+  private saveRecentSearch(): void {
+    if (!this.recentSearches.includes(this.query)) {
+      this.recentSearches.unshift(this.query);
+      this.recentSearches = this.recentSearches.slice(0, 5);
+    }
+  }
 }

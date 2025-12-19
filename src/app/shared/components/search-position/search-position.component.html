@@ -4,28 +4,78 @@
   <div class="left-panel">
     <mat-card class="search-card elevated">
       <mat-card-title>🔍 Cerca libro</mat-card-title>
-      <mat-card-content>
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Titolo libro</mat-label>
-          <input matInput [(ngModel)]="query" placeholder="Es. Harry Potter">
-        </mat-form-field>
 
-        <button mat-raised-button color="primary" class="full-width" (click)="search()">
-          Cerca
-        </button>
+      <!-- AUTOCOMPLETE -->
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Titolo libro</mat-label>
 
-        <div *ngIf="searched && !result" class="no-results">
-          Libro non trovato
+        <input
+          matInput
+          [(ngModel)]="query"
+          (ngModelChange)="onQueryChange($event)"
+          [matAutocomplete]="auto"
+          placeholder="Es. Harry Potter"
+        />
+
+        <mat-autocomplete
+          #auto="matAutocomplete"
+          (optionSelected)="onBookSelected($event.option.value)"
+        >
+          <mat-option
+            *ngFor="let book of filteredBooks"
+            [value]="book"
+          >
+            📘 {{ book }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="full-width"
+        (click)="search()"
+      >
+        Cerca
+      </button>
+
+      <!-- FEEDBACK -->
+      <div class="search-feedback error" *ngIf="searched && !result">
+        <mat-icon>info</mat-icon>
+        <span>Libro non trovato</span>
+      </div>
+
+      <div class="search-feedback success" *ngIf="result">
+        <mat-icon>check_circle</mat-icon>
+        <span>Libro trovato</span>
+      </div>
+
+      <!-- RICERCHE RECENTI -->
+      <div class="recent-searches" *ngIf="recentSearches.length">
+        <mat-icon>history</mat-icon>
+        <span>Ricerche recenti:</span>
+
+        <div class="recent-items">
+          <button
+            mat-stroked-button
+            *ngFor="let r of recentSearches"
+            (click)="onBookSelected(r)"
+          >
+            {{ r }}
+          </button>
         </div>
-      </mat-card-content>
+      </div>
     </mat-card>
 
     <!-- ALTRI LIBRI -->
     <div class="other-books">
-      <h3>📚 Altri libri</h3>
+      <h3>📚 Libri disponibili</h3>
 
       <div class="book-cards-container">
-        <mat-card class="book-card modern" *ngFor="let book of otherBooks">
+        <mat-card
+          class="book-card modern"
+          *ngFor="let book of otherBooks"
+        >
           <mat-card-header>
             <div mat-card-avatar class="book-avatar">📖</div>
             <mat-card-title>{{ book.title }}</mat-card-title>
@@ -35,7 +85,7 @@
             <button
               mat-stroked-button
               color="primary"
-              (click)="selectBook(book.title)"
+              (click)="onBookSelected(book.title)"
             >
               Vedi posizione
             </button>
@@ -49,6 +99,7 @@
   <div class="right-panel" *ngIf="result">
     <mat-card class="result-card elevated">
       <mat-card-title>📍 Posizione libro</mat-card-title>
+
       <mat-card-content>
         <p><strong>Settore:</strong> {{ result.sector }}</p>
         <p><strong>Scaffale:</strong> {{ result.shelf }}</p>
@@ -56,5 +107,4 @@
       </mat-card-content>
     </mat-card>
   </div>
-
 </div>

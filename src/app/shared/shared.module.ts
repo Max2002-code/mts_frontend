@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MovementTrackingComponent } from './components/movement-tracking/movement-tracking.component';
 import { SearchPositionComponent } from './components/search-position/search-position.component';
 import { RouterModule } from '@angular/router';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { RouterModule } from '@angular/router';
     MatIconModule,
     MatChipsModule,
     RouterModule,
-    MatSelectModule
+    MatSelectModule,
+    MatAutocompleteModule
   ],
   exports: [
     MovementTrackingComponent,

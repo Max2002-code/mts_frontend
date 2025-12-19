@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { LocationsService } from 'src/app/core/services/locations.service';
 import { Location } from 'src/app/core/models/location.model';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-search-position',
@@ -14,7 +14,18 @@ export class SearchPositionComponent {
   result: Location | null = null;
   searched = false;
 
-  // Lista di altri libri
+  // Autocomplete
+  books: string[] = [
+    'Harry Potter',
+    'Il Signore degli Anelli',
+    '1984',
+    'Il Piccolo Principe'
+  ];
+  filteredBooks: string[] = [];
+
+  recentSearches: string[] = [];
+
+  // Libri suggeriti
   otherBooks = [
     { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
     { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
@@ -27,19 +38,40 @@ export class SearchPositionComponent {
     private router: Router
   ) {}
 
-  search(): void {
-    this.searched = true;
-    this.result = this.locationsService.findBook(this.query);
+  /* AUTOCOMPLETE */
+  onQueryChange(value: string): void {
+    this.filteredBooks = value
+      ? this.books.filter(b =>
+          b.toLowerCase().includes(value.toLowerCase())
+        )
+      : [];
   }
 
-  // Metodo per selezionare un libro dalla lista
-  selectBook(title: string): void {
+  onBookSelected(title: string): void {
     this.query = title;
+    this.filteredBooks = [];
     this.search();
   }
 
-  // Vai al tracciamento del libro selezionato
+  /* RICERCA */
+  search(): void {
+    this.searched = true;
+    this.result = this.locationsService.findBook(this.query);
+
+    if (this.result) {
+      this.saveRecentSearch();
+    }
+  }
+
+  /* NAVIGAZIONE */
   goToTracking(title: string): void {
-    this.router.navigate(['/tracking', title]);
+    this.router.navigate(['/', title]);
+  }
+
+  private saveRecentSearch(): void {
+    if (!this.recentSearches.includes(this.query)) {
+      this.recentSearches.unshift(this.query);
+      this.recentSearches = this.recentSearches.slice(0, 5);
+    }
   }
 }
