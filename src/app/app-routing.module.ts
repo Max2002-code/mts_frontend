@@ -1,14 +1,16 @@
 // src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './features/home/home.component';
-import { MovementTrackingComponent } from './shared/components/movement-tracking/movement-tracking.component';
+import { HomeComponent } from './core/home/home.component';
+import { MovementTrackingComponent } from './core/movement-tracking/movement-tracking.component';
+import { SearchPositionComponent } from './core/search-position/search-position.component';
 
 const routes: Routes = [
-  { path: '', component: HomeComponent },
+  { path: '', redirectTo: 'home' },
+  { path: 'home', component: HomeComponent },
 
-  { path: 'movements', loadChildren: () => import('./features/movements/movements.module').then(m => m.MovementsModule) },
-  { path: 'search', loadChildren: () => import('./features/search/search.module').then(m => m.SearchModule) },
+  { path: 'movements', component: MovementTrackingComponent },
+  { path: 'search', component: SearchPositionComponent },
 
   // ✅ QUESTA DEVE STARE PRIMA DEL **
   { path: 'tracking/:title', component: MovementTrackingComponent },

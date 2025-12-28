@@ -7,7 +7,7 @@ export interface MovementHistory {
 export interface Movement {
   id: number;
   bookTitle: string;
-status: 'Disponibile' | 'In Prestito' | 'In Transito' | 'Arrivato';
+  status: 'Disponibile' | 'In Prestito' | 'In Transito' | 'Arrivato';
   history?: MovementHistory[];
   arrivalDate?: Date;  // <-- nuova proprietà
 }

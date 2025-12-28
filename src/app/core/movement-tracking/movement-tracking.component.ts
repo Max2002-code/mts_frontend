@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MovementsService } from 'src/app/core/services/movements.service';
-import { Movement } from 'src/app/core/models/movement.model';
+import { MovementsService } from 'src/app/services/movements.service';
+import { Movement } from 'src/app/models/movement.model';
 
 @Component({
   selector: 'app-movement-tracking',

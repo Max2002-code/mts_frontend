@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { LocationsService } from 'src/app/core/services/locations.service';
-import { Location } from 'src/app/core/models/location.model';
+import { LocationsService } from 'src/app/services/locations.service';
+import { Location } from 'src/app/models/location.model';
 
 @Component({
   selector: 'app-search-position',
