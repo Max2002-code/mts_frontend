@@ -16,6 +16,7 @@ import { RouterModule } from '@angular/router';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeComponent } from './home/home.component';
 import { SearchPositionComponent } from './search-position/search-position.component';
+import { CorePagesRoutingModule } from './core-routing.module';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SearchPositionComponent } from './search-position/search-position.compo
     HomeComponent
   ],
   imports: [
+    CorePagesRoutingModule,
     CommonModule,
     FormsModule,
     MatCardModule,
@@ -37,7 +39,8 @@ import { SearchPositionComponent } from './search-position/search-position.compo
     MatChipsModule,
     RouterModule,
     MatSelectModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    
   ],
   exports: [
     MovementTrackingComponent,

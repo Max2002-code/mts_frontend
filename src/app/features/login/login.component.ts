@@ -7,4 +7,8 @@ import { Component } from '@angular/core';
 })
 export class LoginComponent {
 
+  onLogin() {
+    console.log('Login submit');
+  }
+
 }

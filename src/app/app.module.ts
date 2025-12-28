@@ -11,10 +11,15 @@ import { CoreModule } from './core/core.module';
 
 // Componenti
 import { AppComponent } from './app.component';
+import { FeaturesModule } from './features/features.module';
+import { FeaturesLayoutComponent } from './layout/features/features-layout/features-layout.component';
+import { CoreLayoutComponent } from './layout/core/core-layout/core-layout.component';
 
 @NgModule({
   declarations: [
     AppComponent,
+    FeaturesLayoutComponent,
+    CoreLayoutComponent,
   ],
   imports: [
     BrowserModule,
@@ -24,6 +29,7 @@ import { AppComponent } from './app.component';
     MatButtonModule,
     MatToolbarModule,
     CoreModule,
+    FeaturesModule,
   ],
   bootstrap: [AppComponent]
 })
