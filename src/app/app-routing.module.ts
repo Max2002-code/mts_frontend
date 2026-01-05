@@ -1,6 +1,6 @@
 // src/app/app-routing.module.ts
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './core/home/home.component';
 import { MovementTrackingComponent } from './core/movement-tracking/movement-tracking.component';
 import { SearchPositionComponent } from './core/search-position/search-position.component';
@@ -10,6 +10,8 @@ import { title } from 'process';
 import { FEATURES_ROUTING } from './shared/routes/features-comp.routing';
 import { CoreLayoutComponent } from './layout/core/core-layout/core-layout.component';
 import { CORE_ROUTING } from './shared/routes/core-comp.routing';
+import { AuthGuardService } from './shared/auth/auth-guard.service';
+import { LogoutComponent } from './features/logout/logout.component';
 
 const routes: Routes = [
   /*{ path: 'home', component: HomeComponent },
@@ -25,15 +27,17 @@ const routes: Routes = [
   { path: '**', redirectTo: '' }*/
 
   //logout
+  { path:'logout', component: LogoutComponent },
 
+  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING, canActivate:[AuthGuardService] },
   { path: '', component: FeaturesLayoutComponent, data:{title:'features view'}, children:FEATURES_ROUTING },
-  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING }
+  
 
 ];
 
 
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

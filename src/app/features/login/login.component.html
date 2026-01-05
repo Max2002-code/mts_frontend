@@ -2,33 +2,33 @@
   <div class="stage" aria-label="Login su pergamena">
     <img class="parchment" src="../../../assets/images/pergamena.png" alt="Pergamena" />
 
-    <form class="form" (ngSubmit)="onLogin()" #f="ngForm">
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()" #f="ngForm">
       <h1>Accedi</h1>
 
       <div class="field">
-        <label for="email">Email</label>
-        <input id="email" type="email" name="email" ngModel required />
+        <label for="username">Username</label>
+        <input id="username" type="text" name="username" formControlName="username" />
       </div>
 
       <div class="field">
         <label for="password">Password</label>
-        <input id="password" type="password" name="password" ngModel required />
+        <input id="password" type="password" name="password" formControlName="password" />
       </div>
 
-      <div class="row">
+      <!--<div class="row">
         <label class="check">
           <input type="checkbox" name="remember" ngModel />
           Ricordami
         </label>
 
         <a class="link" routerLink="/forgot-password">Password dimenticata?</a>
-      </div>
+      </div>-->
 
-      <button type="submit" [disabled]="f.invalid">Login</button>
+      <button type="submit" >Login</button>
 
-      <p class="footer">
+      <!--<p class="footer">
         Non hai un account? <a class="link" routerLink="/register">Registrati</a>
-      </p>
+      </p>-->
     </form>
   </div>
 </div>
