@@ -12,6 +12,7 @@ import { CoreLayoutComponent } from './layout/core/core-layout/core-layout.compo
 import { CORE_ROUTING } from './shared/routes/core-comp.routing';
 import { AuthGuardService } from './shared/auth/auth-guard.service';
 import { LogoutComponent } from './features/logout/logout.component';
+import { ErrorComponent } from './features/error/error.component';
 
 const routes: Routes = [
   /*{ path: 'home', component: HomeComponent },
@@ -32,6 +33,7 @@ const routes: Routes = [
   { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING, canActivate:[AuthGuardService] },
   { path: '', component: FeaturesLayoutComponent, data:{title:'features view'}, children:FEATURES_ROUTING },
   
+  { path: '**', component:ErrorComponent}
 
 ];
 
