@@ -21,4 +21,16 @@ export class ReportService {
 
     return this.httpClient.get(url)
   }
+
+  getHomeStats(){
+    let url = this.base_url + 'home/'
+
+    return this.httpClient.get(url)
+  }
+
+  postBoksList(){
+    let url = this.base_url + ''
+
+    return 
+  }
 }
