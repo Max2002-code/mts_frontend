@@ -15,6 +15,7 @@ import { AuthGuardService } from './shared/auth/auth-guard.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CoreModule } from './core/core.module';
+import { MatDialogModule } from '@angular/material/dialog';
 
 // Componenti
 import { AppComponent } from './app.component';
@@ -23,9 +24,10 @@ import { FeaturesLayoutComponent } from './layout/features/features-layout/featu
 import { CoreLayoutComponent } from './layout/core/core-layout/core-layout.component';
 import { UserModel } from './models/user.model';
 import { StoreModule } from '@ngrx/store';
+import { ViweClientComponent } from './client/viwe-client/viwe-client.component';
 
 
-export interface AppState{
+export interface AppState {
   auth: any
   token: string | null
   user: UserModel | null
@@ -46,6 +48,7 @@ function appInitializer(authService: AuthService) {
     AppComponent,
     FeaturesLayoutComponent,
     CoreLayoutComponent,
+    ViweClientComponent,
   ],
   imports: [
     BrowserModule,
@@ -57,11 +60,12 @@ function appInitializer(authService: AuthService) {
     CoreModule,
     FeaturesModule,
     HttpClientModule,
+    MatDialogModule,
     StoreModule.forRoot({}, {}),
   ],
-  providers: [HttpClient, 
-    {provide: HTTP_INTERCEPTORS, useClass: ApiInterceptionService, multi:true},
-    {provide: APP_INITIALIZER, useFactory: appInitializer, multi:true, deps:[AuthService]},
+  providers: [HttpClient,
+    { provide: HTTP_INTERCEPTORS, useClass: ApiInterceptionService, multi: true },
+    { provide: APP_INITIALIZER, useFactory: appInitializer, multi: true, deps: [AuthService] },
     ReportService,
     AuthGuardService
   ],

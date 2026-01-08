@@ -1,110 +1,107 @@
 <div class="search-container">
 
-  <!-- SINISTRA -->
+  <!-- ===================== PANNELLO SINISTRA ===================== -->
   <div class="left-panel">
-    <mat-card class="search-card elevated">
-      <mat-card-title>🔍 Cerca libro</mat-card-title>
 
-      <!-- AUTOCOMPLETE -->
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Titolo libro</mat-label>
+    <!-- CARD DI RICERCA LIBRO -->
+<div class="search-bar-container">
+  <mat-form-field appearance="outline" class="search-bar">
+    <mat-label>Cerca libro</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      matInput
+      [(ngModel)]="query"
+      (ngModelChange)="onQueryChange($event)"
+      [matAutocomplete]="auto"
+      placeholder="Titolo del libro"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onBookSelected($event.option.value)"
+    >
+      <mat-option *ngFor="let book of filteredBooks" [value]="book">
+        📘 {{ book }}
+      </mat-option>
+    </mat-autocomplete>
+    <button
+      mat-icon-button
+      matSuffix
+      color="primary"
+      (click)="search()"
+      aria-label="Cerca"
+    >
+      <mat-icon>arrow_forward</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
 
-        <input
-          matInput
-          [(ngModel)]="query"
-          (ngModelChange)="onQueryChange($event)"
-          [matAutocomplete]="auto"
-          placeholder="Inserisci il nome del libro"
-        />
-
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onBookSelected($event.option.value)"
-        >
-          <mat-option
-            *ngFor="let book of filteredBooks"
-            [value]="book"
-          >
-            📘 {{ book }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <button
-        mat-raised-button
-        color="primary"
-        class="full-width"
-        (click)="search()"
-      >
-        Cerca
-      </button>
-
-      <!-- FEEDBACK -->
-      <div class="search-feedback error" *ngIf="searched && !result">
-        <mat-icon>info</mat-icon>
-        <span>Libro non trovato</span>
-      </div>
-
-      <div class="search-feedback success" *ngIf="result">
-        <mat-icon>check_circle</mat-icon>
-        <span>Libro trovato</span>
-      </div>
-
-      <!-- RICERCHE RECENTI -->
-      <div class="recent-searches" *ngIf="recentSearches.length">
-        <mat-icon>history</mat-icon>
-        <span>Ricerche recenti:</span>
-
-        <div class="recent-items">
-          <button
-            mat-stroked-button
-            *ngFor="let r of recentSearches"
-            (click)="onBookSelected(r)"
-          >
-            {{ r }}
-          </button>
-        </div>
-      </div>
-    </mat-card>
-
-    <!-- ALTRI LIBRI -->
+    <!-- ===================== LIBRI DISPONIBILI ===================== -->
     <div class="other-books">
       <h3>📚 Libri disponibili</h3>
 
       <div class="book-cards-container">
-        <mat-card
-          class="book-card modern"
-          *ngFor="let book of otherBooks"
-        >
+        <mat-card class="book-card modern" *ngFor="let book of pagedBooks">
           <mat-card-header>
             <div mat-card-avatar class="book-avatar">📖</div>
             <mat-card-title>{{ book.title }}</mat-card-title>
           </mat-card-header>
 
           <mat-card-actions align="end">
-            <button
-              mat-stroked-button
-              color="primary"
-              (click)="onBookSelected(book.title)"
-            >
-              Vedi posizione
-            </button>
+<button
+  mat-stroked-button
+  color="primary"
+  (click)="openPergamena(book)"
+>
+  Vedi posizione
+</button>
+
           </mat-card-actions>
         </mat-card>
       </div>
+
+      <!-- ===================== PAGINAZIONE ===================== -->
+      <div class="pagination" *ngIf="totalPages() > 1">
+        <button
+          mat-stroked-button
+          (click)="prevPage()"
+          [disabled]="currentPage === 0"
+        >
+          ❮ Precedente
+        </button>
+
+        <span>Pagina</span>
+        <input
+          type="number"
+          min="1"
+          [max]="totalPages()"
+          [(ngModel)]="inputPage"
+          (keydown.enter)="goToInputPage()"
+          style="width: 50px; text-align: center;"
+        >
+        <span>di {{ totalPages() }}</span>
+
+        <button
+          mat-stroked-button
+          (click)="nextPage()"
+          [disabled]="currentPage >= totalPages() - 1"
+        >
+          Successivo ❯
+        </button>
+      </div>
+
     </div>
   </div>
+</div>
 
-  <!-- DESTRA -->
-  <div class="right-panel" *ngIf="result">
-    <mat-card class="result-card elevated">
-      <mat-card-title>📍 Posizione libro</mat-card-title>
-
-      <mat-card-content>
-        <p><strong>Settore:</strong> {{ result.sector }}</p>
-        <p><strong>Scaffale:</strong> {{ result.shelf }}</p>
-        <p><strong>Livello:</strong> {{ result.level }}</p>
-      </mat-card-content>
-    </mat-card>
+<!-- ===================== MODALE POSIZIONE PERGAMENA ===================== -->
+<!-- Bottone aggiuntivo opzionale per aprire la pergamena -->
+<!-- Pergamena full-screen, visibile solo se showPergamena = true -->
+<div class="full-pergamena" *ngIf="pergamenaVisible" (click)="closePergamena()">
+  <div class="pergamena-rotolo" (click)="$event.stopPropagation()">
+    <h2>📍 Posizione libro</h2>
+    <p><strong>Settore:</strong> {{ result?.sector }}</p>
+    <p><strong>Scaffale:</strong> {{ result?.shelf }}</p>
+    <p><strong>Livello:</strong> {{ result?.level }}</p>
+    <button (click)="closePergamena()">Chiudi</button>
   </div>
 </div>

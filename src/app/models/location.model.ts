@@ -5,4 +5,5 @@ export interface Location {
   shelf: string;
   level: string;
   books: string[];
+  ownerId?: number;
 }

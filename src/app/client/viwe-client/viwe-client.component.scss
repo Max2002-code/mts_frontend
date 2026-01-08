@@ -1,0 +1,153 @@
+.books-dashboard {
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.search-bar {
+  max-width: 600px;
+  margin: 0 auto 30px auto;
+  position: relative;
+
+  input {
+    width: 100%;
+    padding: 10px 40px 10px 15px;
+    font-size: 1rem;
+    border-radius: 25px;
+    border: 1px solid #ccc;
+    outline: none;
+    transition: 0.2s;
+  }
+
+  input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 1.2rem;
+    color: #888;
+  }
+}
+
+.books-columns {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.books-column {
+  flex: 1;
+  min-width: 300px;
+  background: #fdfdfd;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.books-list {
+  max-height: 400px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.book-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 15px;
+  background-color: #f1f5f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  }
+
+  .book-info {
+    display: flex;
+    flex-direction: column;
+
+    .book-title {
+      font-weight: 600;
+      font-size: 1rem;
+      margin-bottom: 5px;
+    }
+
+    .book-status {
+      font-size: 0.85rem;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 12px;
+      color: white;
+      text-transform: capitalize;
+    }
+
+    .in\ possesso { background-color: #28a745; }
+    .richiesto { background-color: #ffc107; color: #333; }
+    .consegnato { background-color: #6c757d; }
+  }
+}
+
+button {
+  padding: 6px 14px;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-deliver {
+  background-color: #28a745;
+  color: white;
+}
+.btn-deliver:hover {
+  background-color: #218838;
+}
+
+.btn-request {
+  background-color: #007bff;
+  color: white;
+}
+.btn-request:hover {
+  background-color: #0056b3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+
+.pagination button {
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: white;
+}
+
+.pagination button.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
