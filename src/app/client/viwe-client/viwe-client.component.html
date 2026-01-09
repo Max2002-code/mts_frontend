@@ -1,58 +1,143 @@
 <div class="books-dashboard">
-  <!-- Motore di ricerca -->
+
+  <!-- ================= MOTORE DI RICERCA ================= -->
   <div class="search-bar">
-    <input type="text" placeholder="Cerca libro..." [(ngModel)]="searchTerm" (input)="filterBooks()" />
+    <input
+      type="text"
+      placeholder="Cerca libro..."
+      [(ngModel)]="searchTerm"
+      (input)="filterBooks()"
+    />
     <span class="search-icon">🔍</span>
   </div>
 
+  <!-- ================= COLONNE ================= -->
   <div class="books-columns">
-    <!-- Libri in possesso -->
+
+    <!-- ===== I TUOI LIBRI ===== -->
     <div class="books-column">
       <h2>📚 I tuoi libri</h2>
+
       <div class="books-list">
-        <div class="book-card" *ngFor="let book of pagedUserBooks">
+        <div
+          class="book-card"
+          *ngFor="let book of pagedUserBooks; let i = index"
+          [ngClass]="'page-card-' + i"
+        >
           <div class="book-info">
             <span class="book-title">{{ book.title }}</span>
-            <span class="book-status" [ngClass]="book.status">{{ book.status }}</span>
+            <span class="book-status" [ngClass]="book.status">
+              {{ book.status }}
+            </span>
           </div>
-          <button *ngIf="book.status === 'in possesso'" class="btn-deliver" (click)="deliverBook(book)">
+
+          <button
+            *ngIf="book.status === 'in possesso'"
+            class="btn-deliver"
+            (click)="deliverBook(book)"
+          >
             Consegna
           </button>
         </div>
       </div>
 
-      <!-- Paginazione -->
-      <div class="pagination">
-        <button (click)="userPrevPage()" [disabled]="userCurrentPage === 0">&lt;</button>
-        <button *ngFor="let page of [].constructor(userTotalPages()); let i = index"
-                (click)="userGoToPage(i + 1)"
-                [class.active]="i === userCurrentPage">{{ i + 1 }}</button>
-        <button (click)="userNextPage()" [disabled]="userCurrentPage === userTotalPages() - 1">&gt;</button>
-      </div>
+      <!-- PAGINAZIONE TUOI LIBRI -->
+<div class="pagination">
+  <button (click)="userPrevPage()" [disabled]="userCurrentPage === 0">⬅</button>
+
+  <input
+    type="number"
+    [(ngModel)]="userPageInput"
+    (change)="setUserPage()"
+    [min]="1"
+    [max]="userTotalPages"
+    class="page-input"
+  />
+
+  di {{ userTotalPages }}
+
+  <button (click)="userNextPage()" [disabled]="userCurrentPage >= userTotalPages - 1">➡</button>
+</div>
+
     </div>
 
-    <!-- Libri disponibili -->
+    <!-- ===== MAGAZZINO ===== -->
     <div class="books-column">
       <h2>🏢 Libri dal magazzino</h2>
+
       <div class="books-list">
-        <div class="book-card" *ngFor="let book of pagedAvailableBooks">
+        <div
+          class="book-card"
+          *ngFor="let book of pagedAvailableBooks; let i = index"
+          [ngClass]="'page-card-' + i + ' warehouse-card'"
+        >
           <div class="book-info">
             <span class="book-title">{{ book }}</span>
           </div>
-          <button class="btn-request" (click)="requestBookFromWarehouse(book)">
+
+          <button
+            class="btn-request"
+            (click)="requestBookFromWarehouse(book)"
+          >
             Richiedi
           </button>
         </div>
       </div>
 
-      <!-- Paginazione -->
-      <div class="pagination">
-        <button (click)="availablePrevPage()" [disabled]="availableCurrentPage === 0">&lt;</button>
-        <button *ngFor="let page of [].constructor(availableTotalPages()); let i = index"
-                (click)="availableGoToPage(i + 1)"
-                [class.active]="i === availableCurrentPage">{{ i + 1 }}</button>
-        <button (click)="availableNextPage()" [disabled]="availableCurrentPage === availableTotalPages() - 1">&gt;</button>
+      <!-- PAGINAZIONE MAGAZZINO -->
+<div class="pagination">
+  <button (click)="availablePrevPage()" [disabled]="availableCurrentPage === 0">⬅</button>
+
+  <input
+    type="number"
+    [(ngModel)]="availablePageInput"
+    (change)="setAvailablePage()"
+    [min]="1"
+    [max]="availableTotalPages"
+    class="page-input"
+  />
+
+  di {{ availableTotalPages }}
+
+  <button (click)="availableNextPage()" [disabled]="availableCurrentPage >= availableTotalPages - 1">➡</button>
+</div>
+
+    </div>
+
+  </div> <!-- FINE books-columns -->
+
+  <!-- ================= DASHBOARD RICHIESTE ================= -->
+  <div class="requested-dashboard" *ngIf="requestedBooks.length > 0">
+    <h2>📊 Libri richiesti</h2>
+
+    <div class="requested-grid">
+      <div
+        class="requested-card"
+        *ngFor="let book of pagedRequestedBooks; trackBy: trackByTitle; let i = index"
+        [ngClass]="'page-card-' + i"
+      >
+        <div class="requested-title">📕 {{ book.title }}</div>
+        <div class="requested-status">⏳ In attesa</div>
       </div>
     </div>
+
+    <!-- PAGINAZIONE DASHBOARD RICHIESTE -->
+    <div class="pagination">
+      <button (click)="requestedPrevPage()" [disabled]="requestedCurrentPage === 0">⬅ Precedente</button>
+
+      <input
+        type="number"
+        [(ngModel)]="requestedPageInput"
+        (change)="setRequestedPage()"
+        [min]="1"
+        [max]="requestedTotalPages"
+        class="page-input"
+      />
+
+      di {{ requestedTotalPages }}
+
+      <button (click)="requestedNextPage()" [disabled]="requestedCurrentPage >= requestedTotalPages - 1">Successivo ➡</button>
+    </div>
   </div>
+
 </div>

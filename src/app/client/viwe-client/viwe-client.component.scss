@@ -3,6 +3,7 @@
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* ================= MOTORE DI RICERCA ================= */
 .search-bar {
   max-width: 600px;
   margin: 0 auto 30px auto;
@@ -33,6 +34,7 @@
   }
 }
 
+/* ================= COLONNE LIBRI ================= */
 .books-columns {
   display: flex;
   gap: 30px;
@@ -45,7 +47,7 @@
   background: #fdfdfd;
   padding: 20px;
   border-radius: 15px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
@@ -55,27 +57,52 @@ h2 {
 }
 
 .books-list {
-  max-height: 400px;
-  overflow-y: auto;
+  max-height: 450px;
+  overflow: hidden; // necessario per animazione
   display: flex;
   flex-direction: column;
   gap: 15px;
   margin-bottom: 20px;
+  perspective: 1200px; // profondità 3D per il flip
 }
 
 .book-card {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 12px 15px;
-  background-color: #f1f5f9;
+  padding: 15px 20px;
   border-radius: 12px;
+  background-color: #f1f5f9;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-  transition: transform 0.2s, box-shadow 0.2s;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.4s ease, 
+              transform 0.7s ease-in-out;
+
+  &.page-enter {
+    transform: rotateY(-90deg);
+    opacity: 0;
+  }
+
+  &.page-enter-active {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+
+  &.page-exit {
+    transform: rotateY(0deg);
+    opacity: 1;
+  }
+
+  &.page-exit-active {
+    transform: rotateY(90deg);
+    opacity: 0;
+  }
 
   &:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    transform: translateY(-2px) rotateY(0deg);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
   }
 
   .book-info {
@@ -103,6 +130,52 @@ h2 {
   }
 }
 
+
+/* ================= LIBRI MAGAZZINO ================= */
+/* ================= LIBRI MAGAZZINO ================= */
+.books-column:nth-child(2) .book-card {
+  transform: scale(1.05);
+  font-size: 1.05rem;
+  padding: 20px 20px 20px 15px; /* meno padding a sinistra */
+  display: flex;
+  flex-direction: row; /* titolo/info a sinistra, bottone a destra */
+  align-items: center;
+  justify-content: space-between; /* bottone sempre a destra */
+  gap: 12px;
+}
+
+.books-column:nth-child(2) .book-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-left: 5px; /* sposta leggermente verso sinistra */
+}
+
+.books-column:nth-child(2) .book-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.books-column:nth-child(2) .book-status {
+  font-size: 0.85rem;
+  font-weight: bold;
+  padding: 2px 8px;
+  border-radius: 12px;
+  color: white;
+  text-transform: capitalize;
+}
+
+.books-column:nth-child(2) .btn-request {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  margin-right: 40px;
+  white-space: nowrap; /* evita che il testo vada a capo */
+}
+
+
+/* ================= BOTTONE GENERICO ================= */
 button {
   padding: 6px 14px;
   border-radius: 12px;
@@ -128,26 +201,147 @@ button {
   background-color: #0056b3;
 }
 
+/* ================= PAGINAZIONE ================= */
 .pagination {
   display: flex;
   justify-content: center;
-  gap: 5px;
+  align-items: center;
+  gap: 6px;
+  margin-top: 10px;
+
+  button {
+    padding: 4px 10px;
+    border: 1px solid #ccc;
+    background: white;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: 0.2s;
+  }
+
+  button.active {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+    font-weight: bold;
+  }
+
+  button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-input {
+    width: 50px;
+    padding: 4px 6px;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-weight: bold;
+    transition: 0.2s;
+  }
+
+  .page-input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 6px rgba(0, 123, 255, 0.3);
+    outline: none;
+  }
 }
 
-.pagination button {
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  background-color: white;
+/* ================= DASHBOARD RICHIESTE ORIZZONTALE ================= */
+.requested-dashboard {
+  margin-top: 50px;
+  padding-top: 30px;
+  border-top: 2px dashed #ddd;
+  animation: fadeIn 0.4s ease-in;
 }
 
-.pagination button.active {
-  background-color: #007bff;
-  color: white;
-  border-color: #007bff;
+.requested-grid {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  overflow-x: auto; /* scroll orizzontale se troppe card */
+  padding-bottom: 10px;
+  flex-wrap: nowrap; /* forza orizzontale */
 }
 
-.pagination button:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.requested-card {
+  background: #fff8e1;
+  border-left: 6px solid #ff9800;
+  padding: 20px;
+  border-radius: 10px;
+  animation: slideUp 0.35s ease both;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  width: 260px;
+  flex: 0 0 auto;
+
+  display: flex;
+  flex-direction: row; /* info a sinistra, bottone a destra */
+  align-items: center;
+  justify-content: space-between; /* bottone sempre a destra */
+}
+
+.requested-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.requested-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #333;
+}
+
+.requested-status {
+  font-size: 1rem;
+  color: #555;
+  font-weight: 600;
+}
+
+.requested-card .btn-request {
+  padding: 8px 16px;
+  font-size: 0.95rem;
+  border-radius: 10px;
+  white-space: nowrap;
+}
+
+/* ================= ANIMAZIONI ================= */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+  .books-columns {
+    flex-direction: column;
+  }
+
+  .books-column {
+    min-width: 100%;
+  }
+
+  .page-input {
+    width: 40px;
+  }
+
+  .requested-grid {
+    flex-wrap: nowrap; /* rimane orizzontale anche su mobile */
+    overflow-x: auto;
+  }
+
+  .requested-card {
+    width: 220px; /* leggermente più piccola su mobile */
+  }
 }
