@@ -10,24 +10,15 @@
     <mat-icon matPrefix>search</mat-icon>
     <input
       matInput
-      [(ngModel)]="query"
-      (ngModelChange)="onQueryChange($event)"
-      [matAutocomplete]="auto"
+      [(ngModel)]="search.name"
       placeholder="Titolo del libro"
+      (keydown.enter)="getBooks()"
     />
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="onBookSelected($event.option.value)"
-    >
-      <mat-option *ngFor="let book of filteredBooks" [value]="book">
-        📘 {{ book }}
-      </mat-option>
-    </mat-autocomplete>
     <button
       mat-icon-button
       matSuffix
       color="primary"
-      (click)="search()"
+      (click)="getBooks()"
       aria-label="Cerca"
     >
       <mat-icon>arrow_forward</mat-icon>
@@ -40,28 +31,28 @@
       <h3>📚 Libri disponibili</h3>
 
       <div class="book-cards-container">
-        <mat-card class="book-card modern" *ngFor="let book of pagedBooks">
+        <mat-card class="book-card modern" *ngFor="let book of rows.results">
           <mat-card-header>
             <div mat-card-avatar class="book-avatar">📖</div>
-            <mat-card-title>{{ book.title }}</mat-card-title>
+            <mat-card-title>{{ book.name }}</mat-card-title>
           </mat-card-header>
 
           <mat-card-actions align="end">
-<button
-  mat-stroked-button
-  color="primary"
-  (click)="openPergamena(book)"
->
-  Vedi posizione
-</button>
+            <button
+              mat-stroked-button
+              color="primary"
+              (click)="openPergamena(book)"
+            >
+              Vedi posizione
+            </button>
 
           </mat-card-actions>
         </mat-card>
       </div>
 
       <!-- ===================== PAGINAZIONE ===================== -->
-      <div class="pagination" *ngIf="totalPages() > 1">
-        <button
+      <mat-paginator (page)="datatablePage($event)" [length]="rows.total" class="pagination" [pageSize]="rows.per_page">
+        <!--<button
           mat-stroked-button
           (click)="prevPage()"
           [disabled]="currentPage === 0"
@@ -86,8 +77,8 @@
           [disabled]="currentPage >= totalPages() - 1"
         >
           Successivo ❯
-        </button>
-      </div>
+        </button>-->
+      </mat-paginator>
 
     </div>
   </div>
@@ -96,12 +87,12 @@
 <!-- ===================== MODALE POSIZIONE PERGAMENA ===================== -->
 <!-- Bottone aggiuntivo opzionale per aprire la pergamena -->
 <!-- Pergamena full-screen, visibile solo se showPergamena = true -->
-<div class="full-pergamena" *ngIf="pergamenaVisible" (click)="closePergamena()">
+<div class="full-pergamena" *ngIf="pergamenaVisible" (click)="pergamenaVisible =false">
   <div class="pergamena-rotolo" (click)="$event.stopPropagation()">
     <h2>📍 Posizione libro</h2>
-    <p><strong>Settore:</strong> {{ result?.sector }}</p>
-    <p><strong>Scaffale:</strong> {{ result?.shelf }}</p>
-    <p><strong>Livello:</strong> {{ result?.level }}</p>
-    <button (click)="closePergamena()">Chiudi</button>
+    <p><strong>Cliente:</strong> {{ result.company.name }}</p>
+    <p><strong>Scaffale:</strong> {{ result.scaffale }}</p>
+    <p><strong>Livello:</strong> ( {{ result.x }} ; {{ result.y }} ) {{ result.lato }} </p>
+    <button (click)="pergamenaVisible=false">Chiudi</button>
   </div>
 </div>
