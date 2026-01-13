@@ -1,14 +1,12 @@
 <div class="tracking-dashboard">
 
-  <!-- SINISTRA -->
+  <!-- SINISTRA: ricerca libro -->
   <div class="left-panel">
-    <mat-card class="search-card elevated">
+    <mat-card class="elevated">
       <mat-card-title>🔍 Tracciamento libro</mat-card-title>
 
-      <!-- AUTOCOMPLETE -->
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Titolo libro</mat-label>
-
         <input
           matInput
           [(ngModel)]="query"
@@ -16,114 +14,75 @@
           [matAutocomplete]="auto"
           placeholder="Es. Harry Potter"
         />
-
-        <mat-autocomplete
-          #auto="matAutocomplete"
-          (optionSelected)="onBookSelected($event.option.value)"
-        >
-          <mat-option
-            *ngFor="let book of filteredBooks"
-            [value]="book"
-          >
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onBookSelected($event.option.value)">
+          <mat-option *ngFor="let book of filteredBooks" [value]="book">
             📘 {{ book }}
           </mat-option>
         </mat-autocomplete>
       </mat-form-field>
 
-      <button
-        mat-raised-button
-        color="primary"
-        class="full-width"
-        (click)="search()"
-      >
+      <button mat-raised-button color="primary" class="full-width" (click)="search()">
         Cerca
       </button>
 
-      <!-- FEEDBACK -->
+      <!-- Feedback -->
       <div class="search-feedback error" *ngIf="searched && !movement">
         <mat-icon>info</mat-icon>
-        <span>Libro non trovato</span>
+        Libro non trovato
       </div>
-
       <div class="search-feedback success" *ngIf="movement">
         <mat-icon>check_circle</mat-icon>
-        <span>Libro trovato</span>
+        Libro trovato
       </div>
-
-      <!-- RICERCHE RECENTI -->
-      <div class="recent-searches" *ngIf="recentSearches.length">
-        <mat-icon>history</mat-icon>
-        <span>Ricerche recenti:</span>
-
-        <div class="recent-items">
-          <button
-            mat-stroked-button
-            *ngFor="let r of recentSearches"
-            (click)="onBookSelected(r)"
-          >
-            {{ r }}
-          </button>
-        </div>
-      </div>
-
-      <!-- FILTRI -->
-      <div class="status-filters" *ngIf="movement">
-        <mat-label>Filtra cronologia:</mat-label>
-        <mat-select [(ngModel)]="filterStatus" (selectionChange)="onFilterChange()">
-          <mat-option value="Tutti">Tutti</mat-option>
-          <mat-option value="Arrivato">Arrivato</mat-option>
-          <mat-option value="In Transito">In consegna</mat-option>
-          <mat-option value="In Prestito">In prestito</mat-option>
-          <mat-option value="Disponibile">Disponibile</mat-option>
-        </mat-select>
-      </div>
-
     </mat-card>
   </div>
 
-  <!-- DESTRA -->
+  <!-- DESTRA: info libro -->
   <div class="right-panel" *ngIf="movement">
-    <mat-card class="book-card elevated">
-
-      <!-- HEADER -->
+    <mat-card class="elevated">
+      
+      <!-- Header -->
       <div class="book-header">
         <h2>{{ movement.bookTitle }}</h2>
-        <span class="status-badge" [ngClass]="movement.status | lowercase">
-          {{ movement.status }}
-        </span>
+        <span class="status-badge" [ngClass]="movement.status | lowercase">{{ movement.status }}</span>
       </div>
 
-      <!-- CRONOLOGIA -->
+      <!-- Cronologia -->
       <mat-card-content>
         <h4>📜 Cronologia</h4>
-
-        <div *ngIf="filteredHistory.length; else noHistory" class="timeline">
-          <div class="timeline-item" *ngFor="let h of filteredHistory">
-            <div class="dot"></div>
+        <div *ngIf="movement.history?.length; else noHistory">
+          <div *ngFor="let h of movement.history" class="timeline-item">
+            <div class="dot" [ngClass]="h.description | lowercase"></div>
             <div class="content">
               <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong>
               <p>{{ h.description }}</p>
             </div>
           </div>
         </div>
-
         <ng-template #noHistory>
           <p class="empty">Nessuna cronologia disponibile</p>
         </ng-template>
       </mat-card-content>
 
-      <!-- AZIONI -->
-      <mat-divider></mat-divider>
-
+      <!-- Aggiungi evento semplice -->
       <mat-card-content class="actions">
-        <mat-form-field appearance="outline">
-          <mat-label>Data arrivo</mat-label>
-          <input matInput type="date" [(ngModel)]="arrivalInput">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nuovo stato</mat-label>
+          <mat-select [(ngModel)]="newEventStatus">
+            <mat-option value="Disponibile">Disponibile</mat-option>
+            <mat-option value="In Transito">In transito</mat-option>
+            <mat-option value="In Prestito">In prestito</mat-option>
+            <mat-option value="Arrivato">Arrivato</mat-option>
+            <mat-option value="Smarrito">Smarrito</mat-option>
+          </mat-select>
         </mat-form-field>
 
-        <button mat-raised-button color="accent" (click)="setArrival()">
-          Segna come arrivato
-        </button>
+        <mat-form-field appearance="outline">
+          <mat-label>Data</mat-label>
+          <input matInput type="date" [(ngModel)]="newEventDate" />
+        </mat-form-field>
+
+        <button mat-raised-button color="accent" (click)="addEvent()">Aggiungi</button>
       </mat-card-content>
 
     </mat-card>

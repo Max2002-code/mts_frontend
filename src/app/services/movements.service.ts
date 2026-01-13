@@ -1,52 +1,95 @@
 import { Injectable } from '@angular/core';
-import { Movement } from '../models/movement.model';
+import {
+  Movement,
+  MovementEvent,
+  MovementStatus
+} from '../models/movement.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MovementsService {
 
-  private movements: Movement[] = [
+  /* =======================
+     DATI MOCK
+  ======================= */
+  public movements: Movement[] = [
     {
-      id: 1,
       bookTitle: 'Harry Potter',
       status: 'In Transito',
       history: [
-        { date: new Date('2025-12-01'), description: 'Prelevato dal magazzino' },
-        { date: new Date('2025-12-03'), description: 'In viaggio verso il cliente' }
+        {
+          date: new Date('2025-12-01'),
+          description: 'Disponibile',
+          note: 'In magazzino centrale'
+        },
+        {
+          date: new Date('2025-12-03'),
+          description: 'In Transito',
+          note: 'Spedizione verso filiale'
+        }
       ]
     },
     {
-      id: 2,
       bookTitle: 'Dune',
       status: 'Disponibile',
       history: [
-        { date: new Date('2025-12-02'), description: 'In magazzino' }
+        {
+          date: new Date('2025-12-02'),
+          description: 'Disponibile',
+          note: 'Pronto per il prestito'
+        }
       ]
     },
     {
-      id: 3,
       bookTitle: 'Il Signore degli Anelli',
       status: 'In Prestito',
       history: [
-        { date: new Date('2025-12-04'), description: 'Prestito a utente' }
+        {
+          date: new Date('2024-10-01'),
+          description: 'In Prestito',
+          note: 'Prestato a utente #123'
+        }
       ]
     }
   ];
 
-  getAll(): Movement[] {
+  /* =======================
+     GETTERS PUBBLICI
+  ======================= */
+
+  /** 🔹 Usato dalla dashboard stats */
+  getMovements(): Movement[] {
     return this.movements;
   }
 
+  /** 🔹 Ricerca libro */
   getMovementByBook(title: string): Movement | null {
     const search = title.trim().toLowerCase();
     if (!search) return null;
 
-    return this.movements.find(m => m.bookTitle.toLowerCase().includes(search)) || null;
+    return (
+      this.movements.find(m =>
+        m.bookTitle.toLowerCase().includes(search)
+      ) ?? null
+    );
   }
 
-  getFirstByStatus(status: string): Movement | null {
-  return this.movements.find(m => m.status === status) || null;
-}
+  /** 🔹 Utility (opzionale) */
+  getFirstByStatus(status: MovementStatus): Movement | null {
+    return this.movements.find(m => m.status === status) ?? null;
+  }
 
+  /* =======================
+     MUTAZIONI (future-ready)
+  ======================= */
+
+  /** 🔹 Aggiunta evento (per futuro backend) */
+  addEvent(bookTitle: string, event: MovementEvent): void {
+    const movement = this.getMovementByBook(bookTitle);
+    if (!movement) return;
+
+    movement.history.push(event);
+    movement.status = event.description;
+  }
 }

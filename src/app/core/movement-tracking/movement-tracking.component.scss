@@ -3,149 +3,138 @@
   gap: 24px;
   flex-wrap: wrap;
   align-items: flex-start;
-  padding: 12px;
+  padding: 16px;
   font-family: 'Roboto', sans-serif;
+  background: #f9f9f9;
 }
 
 /* Pannelli */
-.left-panel { 
-  flex: 1; 
-  min-width: 320px; 
+.left-panel {
+  flex: 1;
+  min-width: 280px;
 }
-.right-panel { 
-  flex: 2; 
-  min-width: 360px; 
+.right-panel {
+  flex: 2;
+  min-width: 320px;
 }
 
-/* Schede e layout */
-.full-width { width: 100%; }
-.elevated { 
-  border-radius: 14px; 
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08); 
+/* Schede elevate */
+.elevated {
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
   padding: 16px;
+  background: #fff;
 }
-.no-results { 
-  margin-top: 12px; 
-  color: #e53935; 
-  font-weight: 500;
+
+/* Input e pulsanti */
+.full-width {
+  width: 100%;
+  margin-bottom: 12px;
+}
+button.mat-raised-button {
+  text-transform: none;
 }
 
 /* Intestazione libro */
-.book-header h2 { 
-  margin: 0 0 6px 0; 
-  font-size: 1.4rem;
+.book-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
 }
-.status-badge { 
-  padding: 4px 10px; 
-  border-radius: 12px; 
-  font-size: 0.85rem; 
-  font-weight: 600; 
+.book-header h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: 600;
+}
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: capitalize;
 }
 
-/* Stati libro */
-.in-transito { background: #fff3cd; color: #856404; }
+/* Colori stati */
 .disponibile { background: #e8f5e9; color: #2e7d32; }
+.in-transito { background: #fff3cd; color: #856404; }
 .in-prestito { background: #e3f2fd; color: #1565c0; }
 .arrivato { background: #ede7f6; color: #5e35b1; }
+.smarrito { background: #ffebee; color: #c62828; }
 
-/* Filtri stato */
-.status-filters { 
-  margin-top: 16px; 
-}
-
-/* Timeline */
-.timeline {
-  margin-top: 16px;
-  border-left: 2px solid #e0e0e0;
-  padding-left: 16px;
-}
-
-.timeline-item {
-  position: relative;
-  margin-bottom: 16px;
-  display: flex;
-  align-items: flex-start;
-}
-
-.timeline-item .dot {
-  position: relative;
-  width: 28px;
-  height: 28px;
-  font-size: 14px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-radius: 50%;
-  color: white;
-  margin-right: 12px;
-  flex-shrink: 0;
-}
-
-/* Colori dot timeline */
-.timeline-item .dot.arrivato { background: #5e35b1; }
-.timeline-item .dot.in-transito { background: #ffb74d; }
-.timeline-item .dot.in-prestito { background: #64b5f6; }
-.timeline-item .dot.disponibile { background: #66bb6a; }
-
-.timeline-item .content p { 
-  margin: 4px 0 0; 
-  color: #555; 
-}
-
-/* Azioni */
-.actions { 
-  display: flex; 
-  gap: 16px; 
-  align-items: center; 
-  flex-wrap: wrap; 
-}
-.empty { 
-  color: #888; 
-  font-style: italic;
-}
-
-/* Messaggi ricerca */
+/* Feedback ricerca */
 .search-feedback {
   display: flex;
   align-items: center;
   gap: 6px;
-  margin-top: 12px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  border-radius: 8px;
   font-size: 0.9rem;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: #f5f5f5;
+}
+.search-feedback.error {
+  background: #ffebee;
+  color: #c62828;
+}
+.search-feedback.success {
+  background: #e8f5e9;
+  color: #2e7d32;
 }
 
-.search-feedback mat-icon[color="warn"] { color: #e53935; }
-.search-feedback mat-icon[color="primary"] { color: #2e7d32; }
-
-/* Suggerimenti rapidi */
-.recent-searches {
+/* Timeline */
+.timeline {
   margin-top: 12px;
-  font-size: 0.85rem;
+  border-left: 3px solid #ddd;
+  padding-left: 14px;
+}
+.timeline-item {
   display: flex;
-  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+.timeline-item .dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  margin-right: 10px;
+  flex-shrink: 0;
+  display: flex;
   align-items: center;
-  gap: 6px;
+  justify-content: center;
+}
+.timeline-item .dot.disponibile { background: #2e7d32; }
+.timeline-item .dot.in-transito { background: #856404; }
+.timeline-item .dot.in-prestito { background: #1565c0; }
+.timeline-item .dot.arrivato { background: #5e35b1; }
+.timeline-item .dot.smarrito { background: #c62828; }
+
+.timeline-item .content p {
+  margin: 2px 0 0;
+  font-size: 0.95rem;
+  color: #555;
 }
 
-.recent-searches span {
-  cursor: pointer;
-  color: #3f51b5;
-  text-decoration: underline;
-  padding: 2px 6px;
-  border-radius: 6px;
-  transition: all 0.2s;
+/* Cronologia vuota */
+.empty {
+  color: #888;
+  font-style: italic;
+  margin-top: 6px;
 }
 
-.recent-searches span:hover {
-  color: #1a237e;
-  background: #e3f2fd;
+/* Azioni */
+.actions {
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.actions mat-form-field {
+  margin-bottom: 0;
 }
 
-/* Pulsanti recenti */
-.recent-items button {
-  font-size: 0.8rem;
-  min-width: auto;
-  padding: 4px 8px;
+/* Responsive */
+@media (max-width: 768px) {
+  .tracking-dashboard {
+    flex-direction: column;
+  }
 }
