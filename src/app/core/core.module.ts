@@ -17,6 +17,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { HomeComponent } from './home/home.component';
 import { SearchPositionComponent } from './search-position/search-position.component';
 import { CorePagesRoutingModule } from './core-routing.module';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,7 @@ import { CorePagesRoutingModule } from './core-routing.module';
     RouterModule,
     MatSelectModule,
     MatAutocompleteModule,
-    
+    MatPaginatorModule,
   ],
   exports: [
     MovementTrackingComponent,

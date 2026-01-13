@@ -1,8 +1,9 @@
 import { Component, ViewChild, TemplateRef, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
-import { LocationsService } from 'src/app/services/locations.service';
-import { Location } from 'src/app/models/location.model';
+import { UserModel } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/shared/auth/auth.service';
+import { ReportService } from 'src/app/services/report.service';
 
 @Component({
   selector: 'app-search-position',
@@ -10,151 +11,46 @@ import { Location } from 'src/app/models/location.model';
   styleUrls: ['./search-position.component.scss']
 })
 export class SearchPositionComponent implements OnInit {
+    @ViewChild('positionDialog') positionDialog!: TemplateRef<any>;
 
   // Ricerca libro
   query: string = '';
-  result: Location | null = null;
+  result:any
   searched: boolean = false;
-
-  // Autocomplete
-  books: string[] = ['Harry Potter', 'Il Signore degli Anelli', '1984', 'Il Piccolo Principe'];
-  filteredBooks: string[] = [];
-  recentSearches: string[] = [];
-
-  // Libri suggeriti
-  otherBooks = [
-    { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-        { title: 'Harry Potter', sector: 'A', shelf: 3, level: 2 },
-    { title: 'Il Signore degli Anelli', sector: 'B', shelf: 1, level: 4 },
-    { title: '1984', sector: 'C', shelf: 2, level: 1 },
-    { title: 'Il Piccolo Principe', sector: 'A', shelf: 5, level: 1 },
-  ];
 
   // Paginazione
   pageSize: number = 20;
   currentPage: number = 0;
   inputPage: number = 1; // per input editabile
 
-  @ViewChild('positionDialog') positionDialog!: TemplateRef<any>;
+  currentUser: UserModel | undefined
+  public rows = {page:1, per_page:20, results:[] as any,total:0}
+  search:any={}
+  pergamenaVisible: boolean = false;
 
   constructor(
-    private locationsService: LocationsService,
     private router: Router,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService:AuthService,
+    private http:ReportService,
   ) {}
 
-  ngOnInit(): void {
-    this.updateInputPage();
-  }
+  /* ==================== RICERCA ==================== 
+  search(): void {
+    this.searched = true;
+    this.result = this.locationsService.findBook(this.query);
 
-  /* ==================== AUTOCOMPLETE ==================== */
-  onQueryChange(value: string): void {
-    this.filteredBooks = value
-      ? this.books.filter(b => b.toLowerCase().includes(value.toLowerCase()))
-      : [];
-  }
+    if (!this.result) {
+      alert('Libro non trovato!');
+      return;
+    }
 
-  onBookSelected(title: string): void {
-    this.query = title;
-    this.filteredBooks = [];
-    this.search();
-  }
-
-  /* ==================== RICERCA ==================== */
-search(): void {
-  this.searched = true;
-  this.result = this.locationsService.findBook(this.query);
-
-  if (!this.result) {
-    alert('Libro non trovato!');
-    return;
-  }
-
-  this.saveRecentSearch();
-  this.dialog.open(this.positionDialog, {
-    width: '400px',
-    panelClass: 'modern-dialog'
-  });
-}
+    this.saveRecentSearch();
+    this.dialog.open(this.positionDialog, {
+      width: '400px',
+      panelClass: 'modern-dialog'
+    });
+  }*/
 
 
   /* ==================== MODALE ==================== */
@@ -174,29 +70,21 @@ search(): void {
   openPergamena(book: any) {
     this.result = book;
     this.pergamenaVisible = true;
-}
+  }
 
 
   /* ==================== PAGINAZIONE ==================== */
-  get pagedBooks() {
-    const start = this.currentPage * this.pageSize;
-    return this.otherBooks.slice(start, start + this.pageSize);
-  }
-
-  totalPages(): number {
-    return Math.ceil(this.otherBooks.length / this.pageSize);
-  }
 
   updateInputPage(): void {
     this.inputPage = this.currentPage + 1;
   }
 
-  nextPage(): void {
+  /*nextPage(): void {
     if (this.currentPage < this.totalPages() - 1) {
       this.currentPage++;
       this.updateInputPage();
     }
-  }
+  }*/
 
   prevPage(): void {
     if (this.currentPage > 0) {
@@ -205,34 +93,40 @@ search(): void {
     }
   }
 
-  goToInputPage(): void {
+  /*goToInputPage(): void {
     if (this.inputPage >= 1 && this.inputPage <= this.totalPages()) {
       this.currentPage = this.inputPage - 1;
       this.updateInputPage();
     }
-  }
+  }*/
 
   /* ==================== NAVIGAZIONE ==================== */
   goToTracking(title: string): void {
     this.router.navigate(['/', title]);
   }
 
-  /* ==================== UTILI ==================== */
-  private saveRecentSearch(): void {
-    if (!this.recentSearches.includes(this.query)) {
-      this.recentSearches.unshift(this.query);
-      this.recentSearches = this.recentSearches.slice(0, 5);
-    }
+  datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}){
+    this.inputPage = (pageInfo.offset ?? 0) + 1;
+    this.rows = {page:this.inputPage, per_page:20, results:[], total:this.rows.total}
+
+    this.getBooks();
   }
 
-  pergamenaVisible: boolean = false;
+  getBooks(){
+    let data = this.search
 
-showPergamena() {
-  this.pergamenaVisible = true;
-}
+    this.http.postBooksList(data, this.inputPage).subscribe(data => {
+      this.rows = data
+    })
+  }
 
-closePergamena() {
-  this.pergamenaVisible = false;
-}
+  ngOnInit(): void {
+    this.currentUser = this.authService.getUserFromLocalStorage()
+
+    this.getBooks()
+
+    this.updateInputPage();
+
+  }
 
 }

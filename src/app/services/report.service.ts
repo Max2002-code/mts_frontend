@@ -28,9 +28,10 @@ export class ReportService {
     return this.httpClient.get(url)
   }
 
-  postBoksList(){
-    let url = this.base_url + ''
+  postBooksList(search:any, page=1){
+    let url = this.base_url + 'books/?page='+page
 
-    return 
+    return this.httpClient.post(url, search)
   }
+
 }

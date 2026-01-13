@@ -27,7 +27,7 @@ const routes: Routes = [
   //logout
   { path:'logout', component: LogoutComponent },
 
-  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING,},
+  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING, canActivate:[AuthGuardService]},
   { path: '', component: FeaturesLayoutComponent, data:{title:'features view'}, children:FEATURES_ROUTING },
   
   { path: '**', component:ErrorComponent}
