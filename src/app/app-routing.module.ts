@@ -15,7 +15,7 @@ import { LogoutComponent } from './features/logout/logout.component';
 import { ErrorComponent } from './features/error/error.component';
 
 const routes: Routes = [
-  /*{ path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
 
   { path: 'movements', component: MovementTrackingComponent },
@@ -23,9 +23,6 @@ const routes: Routes = [
 
   // ✅ QUESTA DEVE STARE PRIMA DEL **
   { path: 'tracking/:title', component: MovementTrackingComponent },
-
-  // ❗ SEMPRE PER ULTIMO
-  { path: '**', redirectTo: '' }*/
 
   //logout
   { path:'logout', component: LogoutComponent },

@@ -4,10 +4,22 @@ export interface MovementHistory {
   description: string;
 }
 
+export interface MovementEvent {
+  date: Date;
+  description: MovementStatus;
+  note?: string;
+  isCurrent?: boolean;
+}
+
+export type MovementStatus =
+  | 'Disponibile'
+  | 'In Transito'
+  | 'In Prestito'
+  | 'Arrivato'
+  | 'Smarrito';
+
 export interface Movement {
-  id: number;
   bookTitle: string;
-  status: 'Disponibile' | 'In Prestito' | 'In Transito' | 'Arrivato';
-  history?: MovementHistory[];
-  arrivalDate?: Date;  // <-- nuova proprietà
+  status: MovementStatus;
+  history: MovementEvent[];
 }
