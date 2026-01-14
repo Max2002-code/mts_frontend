@@ -18,12 +18,14 @@ import { HomeComponent } from './home/home.component';
 import { SearchPositionComponent } from './search-position/search-position.component';
 import { CorePagesRoutingModule } from './core-routing.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { PaginatorComponent } from './search-position/paginator/paginator.component';
 
 @NgModule({
   declarations: [
     MovementTrackingComponent,
     SearchPositionComponent,
-    HomeComponent
+    HomeComponent,
+    PaginatorComponent
   ],
   imports: [
     CorePagesRoutingModule,

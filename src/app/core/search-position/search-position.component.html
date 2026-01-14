@@ -50,9 +50,16 @@
         </mat-card>
       </div>
 
+      <app-paginator
+        [currentPage]="rows.page"
+        [totalPages]="rows.pages"
+        [pageSize]="rows.per_page"
+        (pageChange)="onFooterPageChange($event)"
+      ></app-paginator>
+
       <!-- ===================== PAGINAZIONE ===================== -->
-      <mat-paginator (page)="datatablePage($event)" [length]="rows.total" class="pagination" [pageSize]="rows.per_page">
-        <!--<button
+      <!--<mat-paginator (page)="datatablePage($event)" [length]="rows.total" class="pagination" [pageSize]="rows.per_page">
+        <button
           mat-stroked-button
           (click)="prevPage()"
           [disabled]="currentPage === 0"
@@ -77,8 +84,8 @@
           [disabled]="currentPage >= totalPages() - 1"
         >
           Successivo ❯
-        </button>-->
-      </mat-paginator>
+        </button>
+      </mat-paginator>-->
 
     </div>
   </div>

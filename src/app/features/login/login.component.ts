@@ -40,7 +40,11 @@ export class LoginComponent {
     const loginSub = this.authService.login(this.loginForm.value.username, this.loginForm.value.password).pipe(first()).subscribe((user:UserModel | undefined)=>{
       if (user){
         this.authService.setUserFromLocalStorage(user)
-        this.router.navigate(['/home'])
+        if (user.company.name === 'mts') {
+          this.router.navigate(['/home'])
+        } else {
+          this.router.navigate(['/client'])
+        }
       }
     })
     this.unsubscribe.push(loginSub)

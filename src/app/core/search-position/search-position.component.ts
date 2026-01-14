@@ -24,7 +24,7 @@ export class SearchPositionComponent implements OnInit {
   inputPage: number = 1; // per input editabile
 
   currentUser: UserModel | undefined
-  public rows = {page:1, per_page:20, results:[] as any,total:0}
+  public rows = {page:1, per_page:4, results:[] as any,total:0, pages:0}
   search:any={}
   pergamenaVisible: boolean = false;
 
@@ -107,9 +107,28 @@ export class SearchPositionComponent implements OnInit {
 
   datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}){
     this.inputPage = (pageInfo.offset ?? 0) + 1;
-    this.rows = {page:this.inputPage, per_page:20, results:[], total:this.rows.total}
+    this.rows = {page:this.inputPage, per_page:this.rows.per_page, results:[], total:this.rows.total, pages:this.rows.pages}
 
     this.getBooks();
+  }
+
+  onFooterPageChange(page:number){
+    const totalPages = Math.ceil((this.rows.total ?? 0) / this.rows.per_page);
+
+  // validazione
+  if (page < 1) page = 1;
+  if (page > totalPages) page = totalPages;
+
+  const pageInfo = {
+    offset: page - 1,
+    pageSize: this.rows.per_page,
+    limit: this.rows.per_page,
+    count: this.rows.total
+  };
+
+  // riuso la logica già esistente
+  this.datatablePage(pageInfo);
+
   }
 
   getBooks(){

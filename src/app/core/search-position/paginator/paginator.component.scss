@@ -1,0 +1,21 @@
+.paginator-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  border-top: 1px solid #ddd;
+  background-color: #fafafa;
+  gap: 10px;
+}
+
+.page-info {
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.page-input {
+  width: 60px;
+  text-align: center;
+  margin: 0 5px;
+  padding: 4px;
+}

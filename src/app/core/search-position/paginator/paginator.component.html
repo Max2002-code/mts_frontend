@@ -1,0 +1,21 @@
+<footer class="paginator-footer" *ngIf="totalPages > 1">
+
+  <button (click)="prev()" [disabled]="currentPage === 1">◀</button>
+
+  <span class="page-info">
+    Pagina
+    <input
+      type="number"
+      [(ngModel)]="inputPage"
+      (keyup.enter)="submitPage()"
+      min="1"
+      class="page-input"
+    />
+    di {{ totalPages }} | Totale: {{ totalItems }}
+  </span>
+
+  <button (click)="submitPage()">Vai</button>
+
+  <button (click)="next()" [disabled]="currentPage === totalPages">▶</button>
+
+</footer>
