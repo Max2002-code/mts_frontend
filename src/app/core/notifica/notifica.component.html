@@ -1,0 +1,37 @@
+<div class="notifiche-page">
+  <h1 class="title">🔔 Notifiche</h1>
+
+  <ng-container *ngIf="notifiche.length > 0; else vuoto">
+    <div class="notifiche-grid">
+      <mat-card class="notifica-card" *ngFor="let n of notifiche" [ngClass]="{'notifica-letta': n.letta}">
+        
+        <!-- HEADER -->
+        <div class="notifica-header">
+          <mat-icon class="icon" [class]="getIconClass(n.tipo)">notifications</mat-icon>
+          <div class="testo">
+            <h4>{{ n.titolo }}</h4>
+            <p>{{ n.messaggio }}</p>
+          </div>
+        </div>
+
+        <!-- AZIONI -->
+        <div class="azioni">
+          <button mat-raised-button class="accetta" (click)="accetta(n)">
+            ✔ Accetta
+          </button>
+          <button mat-raised-button class="rifiuta" (click)="rifiuta(n)">
+            ✖ Rifiuta
+          </button>
+        </div>
+
+      </mat-card>
+    </div>
+  </ng-container>
+
+  <!-- Messaggio se non ci sono notifiche -->
+  <ng-template #vuoto>
+    <div class="vuoto">
+      Nessuna notifica disponibile 🎉
+    </div>
+  </ng-template>
+</div>

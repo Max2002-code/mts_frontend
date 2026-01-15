@@ -2,13 +2,15 @@ import { RouterModule, Routes } from "@angular/router";
 import { NgModule } from "@angular/core";
 import { HomeComponent } from "./home/home.component";
 import { SearchPositionComponent } from "./search-position/search-position.component";
+import { NotificaComponent } from "./notifica/notifica.component";
 
 const routes: Routes = [
     {
         path: '',
         children : [
             { path: 'home', component: HomeComponent },
-            { path: 'search', component:SearchPositionComponent }
+            { path: 'search', component:SearchPositionComponent },
+            { path: 'notifica', component:NotificaComponent }
         ]
     }
 ]

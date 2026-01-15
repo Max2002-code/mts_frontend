@@ -19,13 +19,15 @@ import { SearchPositionComponent } from './search-position/search-position.compo
 import { CorePagesRoutingModule } from './core-routing.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PaginatorComponent } from './search-position/paginator/paginator.component';
+import { NotificaComponent } from './notifica/notifica.component';
 
 @NgModule({
   declarations: [
     MovementTrackingComponent,
     SearchPositionComponent,
     HomeComponent,
-    PaginatorComponent
+    PaginatorComponent,
+    NotificaComponent
   ],
   imports: [
     CorePagesRoutingModule,
