@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
-export interface Notifica {
-  titolo: string;
-  messaggio: string;
-  tipo: 'success' | 'error' | 'info'; // usato per colore icona
-  letta: boolean;
-}
+import { UserModel } from 'src/app/models/user.model';
+import { ReportService } from 'src/app/services/report.service';
+import { AuthService } from 'src/app/shared/auth/auth.service';
 
 @Component({
   selector: 'app-notifica',
@@ -13,65 +9,23 @@ export interface Notifica {
   styleUrls: ['./notifica.component.scss']
 })
 export class NotificaComponent implements OnInit {
+  currentuUser: UserModel | undefined
+  notifiche: any[] = [];
 
-  notifiche: Notifica[] = [];
-
-  constructor() { }
+  constructor(private authService:AuthService, private http:ReportService) { }
 
   ngOnInit(): void {
-    // Esempio di notifiche
-    this.notifiche = [
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Ordine completato', messaggio: 'L’ordine #1234 è stato completato', tipo: 'success', letta: false },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-      { titolo: 'Errore di sistema', messaggio: 'Impossibile salvare il record', tipo: 'error', letta: false },
-      { titolo: 'Aggiornamento', messaggio: 'Nuova versione disponibile', tipo: 'info', letta: true },
-    ];
+    this.currentuUser = this.authService.getUserFromLocalStorage()
+
+    this.http.getNotifications(false).subscribe(data=>{
+      this.notifiche = data['notifications']
+    })
+  }
+
+  onNotificationHover(notifications:any){
+    if (!notifications.read) return
+
+    notifications.read = false
   }
 
   // Determina la classe dell’icona in base al tipo
@@ -85,13 +39,13 @@ export class NotificaComponent implements OnInit {
   }
 
   // Segna la notifica come accettata
-  accetta(notifica: Notifica) {
+  accetta(notifica: any) {
     notifica.letta = true;
     console.log('Accettata:', notifica);
   }
 
   // Segna la notifica come rifiutata
-  rifiuta(notifica: Notifica) {
+  rifiuta(notifica: any) {
     notifica.letta = true;
     console.log('Rifiutata:', notifica);
   }

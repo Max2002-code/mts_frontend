@@ -238,8 +238,15 @@ export class ViweClientComponent implements OnInit {
 
   /* ==================== AZIONI ==================== */
   deliverBook(book: any, type_move:string): void {
+    if (book.book_status !== 'ricevuto' && type_move !== 'ordinato'){
+      return
+    }
 
-    
+    this.http.postNewOrderBook(book.id, type_move).subscribe(data => {
+      if (data.success){
+        this.getClientBooks()
+      }
+    })
   }
 
   requestBookFromWarehouse(book:any, type_move:string): void {

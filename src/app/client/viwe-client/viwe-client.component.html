@@ -34,7 +34,7 @@
           <button
             *ngIf="book.book_status === 'ricevuto'"
             class="btn-deliver"
-            (click)="deliverBook(book.id, 'ordinato')"
+            (click)="deliverBook(book, 'magazzino')"
           >
             Consegna
           </button>
@@ -83,7 +83,7 @@
 
           <button
             class="btn-request"
-            (click)="requestBookFromWarehouse(book, 'ordinato')"
+            (click)="requestBookFromWarehouse(book, 'ricevuto')"
           >
             Richiedi
           </button>

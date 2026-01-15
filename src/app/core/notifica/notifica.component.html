@@ -3,14 +3,14 @@
 
   <ng-container *ngIf="notifiche.length > 0; else vuoto">
     <div class="notifiche-grid">
-      <mat-card class="notifica-card" *ngFor="let n of notifiche" [ngClass]="{'notifica-letta': n.letta}">
+      <mat-card class="notifica-card" *ngFor="let n of notifiche" (mouseenter)="onNotificationHover(n)" [ngClass]="{'notifica-letta': n.read}">
         
         <!-- HEADER -->
         <div class="notifica-header">
           <mat-icon class="icon" [class]="getIconClass(n.tipo)">notifications</mat-icon>
           <div class="testo">
-            <h4>{{ n.titolo }}</h4>
-            <p>{{ n.messaggio }}</p>
+            <h4>{{ n.title }}</h4>
+            <p>{{ n.message }}</p>
           </div>
         </div>
 
