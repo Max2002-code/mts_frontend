@@ -28,10 +28,28 @@ export class ReportService {
     return this.httpClient.get(url)
   }
 
-  postBooksList(search:any, page=1){
-    let url = this.base_url + 'books/?page='+page
+  postMainBooksList(search:any, page=1){
+    let url = this.base_url + 'main/books/?page='+page
 
     return this.httpClient.post(url, search)
+  }
+
+  postClientBooksList(search:any, magazzino_page=1, order_page=1, out_page=1){
+    let url = this.base_url + 'client/books/?magazzino_page='+magazzino_page+'&order_page='+order_page+'&out_page='+out_page
+
+    return this.httpClient.post(url, search)
+  }
+
+  postNewOrderBook(pk:number, type_move:string){
+    let url = this.base_url + `orderBook/${pk}/`
+
+    return this.httpClient.post(url, {type_move:type_move})
+  }
+
+  getNotifications(only_count:boolean){
+    let url = this.base_url + 'notifications/?only_read='+only_count
+
+    return this.httpClient.get(url)
   }
 
 }

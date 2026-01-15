@@ -48,6 +48,7 @@ import { PaginatorComponent } from './search-position/paginator/paginator.compon
   exports: [
     MovementTrackingComponent,
     SearchPositionComponent,
+    PaginatorComponent,
   ]
 })
 export class CoreModule {}

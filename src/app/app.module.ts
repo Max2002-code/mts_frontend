@@ -25,6 +25,8 @@ import { CoreLayoutComponent } from './layout/core/core-layout/core-layout.compo
 import { UserModel } from './models/user.model';
 import { StoreModule } from '@ngrx/store';
 import { ViweClientComponent } from './client/viwe-client/viwe-client.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatBadgeModule } from '@angular/material/badge';
 
 
 export interface AppState {
@@ -57,6 +59,8 @@ function appInitializer(authService: AuthService) {
     FormsModule,
     MatButtonModule,
     MatToolbarModule,
+    MatIconModule,
+    MatBadgeModule,
     CoreModule,
     FeaturesModule,
     HttpClientModule,

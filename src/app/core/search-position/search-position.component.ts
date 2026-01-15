@@ -134,7 +134,7 @@ export class SearchPositionComponent implements OnInit {
   getBooks(){
     let data = this.search
 
-    this.http.postBooksList(data, this.inputPage).subscribe(data => {
+    this.http.postMainBooksList(data, this.inputPage).subscribe(data => {
       this.rows = data
     })
   }

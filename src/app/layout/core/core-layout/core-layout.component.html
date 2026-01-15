@@ -3,6 +3,19 @@
         <mat-toolbar color="primary" class="main-toolbar">
             <span class="logo">📚 Library Manager</span>
             <span class="spacer"></span>
+            <button class="notifications" routerLinkActive="active-link" mat-icon-button>
+                <mat-icon *ngIf="unread_count > 0"
+                    [matBadge]="unread_count"
+                    matBadgeColor="warn"
+                    matBadgeSize="small"
+                    matBadgeOverlap="true">
+                    notifications
+                </mat-icon>
+                <mat-icon *ngIf="unread_count === 0"
+                    [matBadge]="unread_count">
+                    notifications
+                </mat-icon>
+            </button>
             <button mat-button routerLink="/home" routerLinkActive="active-link">Home</button>
             <button mat-button routerLink="/search" routerLinkActive="active-link">Cerca Libro</button>
             <button mat-button routerLink="/movements" routerLinkActive="active-link">Tracciamento</button>

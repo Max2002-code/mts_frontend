@@ -1,11 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { LocationsService } from 'src/app/services/locations.service';
 import { Location } from 'src/app/models/location.model';
+import { UserModel } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/shared/auth/auth.service';
+import { ReportService } from 'src/app/services/report.service';
 
 interface UserBook {
   title: string;
   status: 'in possesso' | 'richiesto' | 'consegnato';
 }
+
+export interface PaginatorRows<T>{
+  page:number
+  per_page:number
+  results:T[]
+  total:number
+  pages:number
+}
+
+export function createRows<T>(perPage: number = 4): PaginatorRows<T> {
+  return {
+    page: 1,
+    per_page: perPage,
+    results: [],
+    total: 0,
+    pages: 0
+  };
+}
+
 
 @Component({
   selector: 'app-viwe-client',
@@ -13,6 +35,14 @@ interface UserBook {
   styleUrls: ['./viwe-client.component.scss']
 })
 export class ViweClientComponent implements OnInit {
+
+  currentUser: UserModel | undefined
+  //public rows = {page:1, per_page:4, results:[] as any,total:0, pages:0}
+  public rows_mag:PaginatorRows<any>=createRows<any>()
+  public rows_order:PaginatorRows<any>=createRows<any>()
+  public rows_out:PaginatorRows<any>=createRows<any>()
+  search:any={}
+  inputPage: number = 1;
 
   /* ==================== DATI ==================== */
   userBooks: UserBook[] = [];
@@ -36,12 +66,47 @@ export class ViweClientComponent implements OnInit {
   requestedCurrentPage: number = 0;
   requestedPageInput: number = 1;
 
-  constructor(private locationsService: LocationsService) {}
+  constructor(private locationsService: LocationsService, private authService:AuthService, private http:ReportService) {}
+
+  datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}, row_type:any){
+    this.inputPage = (pageInfo.offset ?? 0) + 1;
+    row_type = {page:this.inputPage, per_page:row_type.per_page, results:[], total:row_type.total, pages:row_type.pages}
+
+    this.getClientBooks();
+  }
+
+  onFooterPageChange(page:number, rows_type:any){
+    const totalPages = Math.ceil((rows_type.total ?? 0) / rows_type.per_page);
+
+
+    if (page < 1) page = 1;
+    if (page > totalPages) page = totalPages;
+
+    const pageInfo = {
+      offset: page - 1,
+      pageSize: rows_type.per_page,
+      limit: rows_type.per_page,
+      count: rows_type.total
+    };
+
+    this.datatablePage(pageInfo, rows_type);
+
+  }
+
+  getClientBooks(){
+    let data = this.search
+
+    this.http.postClientBooksList(data, this.inputPage).subscribe(data => {
+      this.rows_mag = data.magazzino
+      this.rows_order = data.order
+      this.rows_out = data.out
+    })
+  }
 
   ngOnInit(): void {
-    this.loadUserBooks();
-    this.loadAvailableBooks();
-    this.filterBooks();
+    this.currentUser = this.authService.getUserFromLocalStorage()
+
+    this.getClientBooks()
   }
 
   /* ==================== CARICAMENTO DATI ==================== */
@@ -81,7 +146,8 @@ export class ViweClientComponent implements OnInit {
 
   /* ==================== SEARCH ==================== */
   filterBooks(): void {
-    const search = this.searchTerm.toLowerCase().trim();
+    
+    /*const search = this.searchTerm.toLowerCase().trim();
 
     this.filteredUserBooks = this.userBooks
       .filter(book => book.status !== 'richiesto')
@@ -94,7 +160,7 @@ export class ViweClientComponent implements OnInit {
     this.availableCurrentPage = 0;
     this.requestedCurrentPage = 0;
 
-    this.updatePageInputs();
+    this.updatePageInputs();*/
   }
 
   /* ==================== AGGIORNA INPUT PAGINA ==================== */
@@ -171,21 +237,21 @@ export class ViweClientComponent implements OnInit {
   }
 
   /* ==================== AZIONI ==================== */
-  deliverBook(book: UserBook): void {
-    if (book.status === 'in possesso') {
-      book.status = 'consegnato';
-      this.loadAvailableBooks();
-      this.filterBooks();
-    }
+  deliverBook(book: any, type_move:string): void {
+
+    
   }
 
-  requestBookFromWarehouse(title: string): void {
-    if (!this.userBooks.some(b => b.title === title)) {
-      this.userBooks.push({ title, status: 'richiesto' });
-      this.requestedCurrentPage = 0;
-      this.availableBooks = this.availableBooks.filter(b => b !== title);
-      this.filterBooks();
+  requestBookFromWarehouse(book:any, type_move:string): void {
+    if (book.book_status !== 'magazzino' && type_move !== 'ordinato'){
+      return
     }
+
+    this.http.postNewOrderBook(book.id, type_move).subscribe(data => {
+      if (data.success){
+        this.getClientBooks()
+      }
+    })
   }
 
   /* ==================== DASHBOARD RICHIESTE ==================== */

@@ -1,21 +1,33 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { UserModel } from 'src/app/models/user.model';
+import { AuthService } from 'src/app/shared/auth/auth.service';
 
 @Component({
   selector: 'app-error',
   templateUrl: './error.component.html',
   styleUrls: ['./error.component.scss']
 })
-export class ErrorComponent {
+export class ErrorComponent implements OnInit {
 
-  constructor(private rouer:Router) { }
+  currentUser: UserModel | undefined
+
+  constructor(private rouer:Router, private authService:AuthService) { }
 
   goBack() {
     window.history.back();
   }
 
   goToHome(){
-    this.rouer.navigate(['/home'])
+    if (this.currentUser?.company.name === 'Mts'){
+      this.rouer.navigate(['/home'])
+    } else {
+      this.rouer.navigate(['/client'])
+    }
+  }
+
+  ngOnInit(): void {
+    this.currentUser = this.authService.getUserFromLocalStorage()
   }
 
 }
