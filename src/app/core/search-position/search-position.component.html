@@ -28,7 +28,10 @@
 
     <!-- ===================== LIBRI DISPONIBILI ===================== -->
     <div class="other-books">
-      <h3>📚 Libri disponibili</h3>
+      <div class="header">
+        <h3>📚 Libri disponibili</h3>
+        <button class="new_book"><span>+</span>Aggiungi</button>
+      </div>
 
       <div class="book-cards-container">
         <mat-card class="book-card modern" *ngFor="let book of rows.results">

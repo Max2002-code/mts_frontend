@@ -52,4 +52,16 @@ export class ReportService {
     return this.httpClient.get(url)
   }
 
+  postNewBooks(data:any){
+    let url = this.base_url + 'books/'
+
+    return this.httpClient.post(url, {books:data})
+  }
+
+  postAllMovemnets(search:any, page=1){
+    let url = this.base_url + 'movements/?page='+page
+
+    return this.httpClient.post(url, search)
+  }
+
 }

@@ -4,6 +4,16 @@
   gap: 16px;
 }
 
+.header{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+.header > button{
+  padding: 10px;
+}
+
 /* Tablet */
 @media (max-width: 1200px) {
   .book-cards-container {
