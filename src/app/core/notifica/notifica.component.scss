@@ -12,19 +12,12 @@ body, html {
    Contenitore principale
    ========================= */
 .notifiche-page {
-  max-width: 1200px;
-  margin: 20px auto;
+   text-align: center; 
+  max-width: 1000px;   /* riduce leggermente la larghezza */
+  margin: 40px auto;   /* margine superiore/inferiore per “respirare” */
   padding: 0 20px;
-  min-height: 100vh;
-}
-
-/* Titolo pagina */
-.title {
-  text-align: center;
-  font-size: 2rem;
-  font-weight: 700;
-  margin: 0 0 30px 0;
-  color: #222;
+  min-height: 80vh;    /* riduce l’altezza minima della pagina */
+  box-sizing: border-box;
 }
 
 /* =========================
@@ -32,10 +25,10 @@ body, html {
    ========================= */
 .notifiche-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* colonne leggermente più piccole */
   gap: 20px;
-  max-height: 80vh; /* limita l’altezza della griglia */
-  overflow-y: auto; /* scroll verticale */
+  max-height: 70vh; /* riduce l’altezza massima della griglia */
+  overflow-y: auto; /* scroll solo nella griglia */
   padding-right: 10px;
 }
 
