@@ -1,91 +1,42 @@
 <div class="tracking-dashboard">
+  <mat-card class="books-card full-width elevated">
+    <mat-card-title>📚 Elenco Libri</mat-card-title>
 
-  <!-- SINISTRA: ricerca libro -->
-  <div class="left-panel">
-    <mat-card class="elevated">
-      <mat-card-title>🔍 Tracciamento libro</mat-card-title>
-
-      <mat-form-field appearance="outline" class="full-width">
-        <mat-label>Titolo libro</mat-label>
-        <input
-          matInput
-          [(ngModel)]="query"
-          (ngModelChange)="onQueryChange($event)"
-          [matAutocomplete]="auto"
-          placeholder="Es. Harry Potter"
-        />
-        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onBookSelected($event.option.value)">
-          <mat-option *ngFor="let book of filteredBooks" [value]="book">
-            📘 {{ book }}
-          </mat-option>
-        </mat-autocomplete>
-      </mat-form-field>
-
-      <button mat-raised-button color="primary" class="full-width" (click)="search()">
-        Cerca
-      </button>
-
-      <!-- Feedback -->
-      <div class="search-feedback error" *ngIf="searched && !movement">
-        <mat-icon>info</mat-icon>
-        Libro non trovato
-      </div>
-      <div class="search-feedback success" *ngIf="movement">
-        <mat-icon>check_circle</mat-icon>
-        Libro trovato
-      </div>
-    </mat-card>
-  </div>
-
-  <!-- DESTRA: info libro -->
-  <div class="right-panel" *ngIf="movement">
-    <mat-card class="elevated">
-      
-      <!-- Header -->
-      <div class="book-header">
-        <h2>{{ movement.bookTitle }}</h2>
-        <span class="status-badge" [ngClass]="movement.status | lowercase">{{ movement.status }}</span>
+    <div class="books-table">
+      <div class="table-header">
+        <div class="col name">Nome Libro</div>
+        <div class="col position">Posizione</div>
+        <div class="col history">Storico</div>
       </div>
 
-      <!-- Cronologia -->
-      <mat-card-content>
-        <h4>📜 Cronologia</h4>
-        <div *ngIf="movement.history?.length; else noHistory">
-          <div *ngFor="let h of movement.history" class="timeline-item">
-            <div class="dot" [ngClass]="h.description | lowercase"></div>
-            <div class="content">
-              <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong>
-              <p>{{ h.description }}</p>
-            </div>
-          </div>
+      <div class="table-row" *ngFor="let book of books">
+        <div class="col name">{{ book.bookTitle }}</div>
+
+        <div class="col position">
+          Scaffale: {{ book.shelf || '-' }}<br>
+          Bancale: {{ book.bancale || '-' }}<br>
+          Lato: {{ book.side || '-' }}
         </div>
-        <ng-template #noHistory>
-          <p class="empty">Nessuna cronologia disponibile</p>
-        </ng-template>
-      </mat-card-content>
 
-      <!-- Aggiungi evento semplice -->
-      <mat-card-content class="actions">
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Nuovo stato</mat-label>
-          <mat-select [(ngModel)]="newEventStatus">
-            <mat-option value="Disponibile">Disponibile</mat-option>
-            <mat-option value="In Transito">In transito</mat-option>
-            <mat-option value="In Prestito">In prestito</mat-option>
-            <mat-option value="Arrivato">Arrivato</mat-option>
-            <mat-option value="Smarrito">Smarrito</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <div class="col history">
+          <button (click)="selectedBook = book">Mostra storico</button>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
 
-        <mat-form-field appearance="outline">
-          <mat-label>Data</mat-label>
-          <input matInput type="date" [(ngModel)]="newEventDate" />
-        </mat-form-field>
-
-        <button mat-raised-button color="accent" (click)="addEvent()">Aggiungi</button>
-      </mat-card-content>
-
-    </mat-card>
+<!-- Modale semplice -->
+<div class="modal-backdrop" *ngIf="selectedBook">
+  <div class="modal">
+    <h2>📚 Storico - {{ selectedBook.bookTitle }}</h2>
+    <ul class="history-list">
+      <li *ngFor="let h of getSortedHistory(selectedBook)">
+        <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong> - 
+        {{ h.description }}
+        <span *ngIf="h.note">({{ h.note }})</span>
+      </li>
+    </ul>
+    <button (click)="selectedBook = null">Chiudi</button>
   </div>
-
 </div>

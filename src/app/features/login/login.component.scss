@@ -1,120 +1,148 @@
 :host {
   display: block;
   min-height: 100vh;
+  font-family: 'Roboto', sans-serif;
 }
 
-/* sfondo pagina elegante */
+/* Sfondo pagina elegante */
 .page {
   min-height: 100vh;
   display: grid;
   place-items: center;
-  background: linear-gradient(135deg, #0b2a6f, #0a3a8a);
-  font-family: 'Roboto', sans-serif;
+  background: linear-gradient(135deg, #0b2a6f 0%, #0a3a8a 100%);
   color: #333;
 }
 
-/* stage centrato */
+/* Stage centrato */
 .stage {
   width: min(400px, 90vw);
   display: grid;
   place-items: center;
+  padding: 16px;
 }
 
-/* form professionale */
+/* Form professionale con effetto card */
 .form {
   width: 100%;
-  padding: 32px 28px;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+  padding: 36px 32px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.2);
   display: flex;
   flex-direction: column;
   align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+  }
 }
 
-/* titolo come immagine */
+/* Titolo come immagine */
 .login-title-image {
   display: block;
-  margin-bottom: 24px;
-  max-width: 220px;  /* puoi adattare la larghezza */
+  margin-bottom: 28px;
+  max-width: 220px;
   height: auto;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.05);
+  }
 }
 
-
-/* titolo */
+/* Titolo testuale */
 .login-title {
   font-size: 2rem;
   font-weight: 700;
-  margin-bottom: 24px;
+  margin-bottom: 28px;
   text-align: center;
   color: #0b2a6f;
+  letter-spacing: 0.5px;
 }
 
-/* campi */
+/* Campi input */
 .field {
   width: 100%;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+
+  label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 6px;
+    font-size: 0.95rem;
+    color: #0b2a6f;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 12px;
+    border: 1px solid rgba(0,0,0,0.2);
+    outline: none;
+    font-size: 1rem;
+    transition: border 0.2s ease, box-shadow 0.2s ease;
+
+    &:focus {
+      border-color: #0b2a6f;
+      box-shadow: 0 0 0 4px rgba(11, 42, 111, 0.15);
+    }
+  }
 }
 
-label {
-  display: block;
-  font-weight: 600;
-  margin-bottom: 6px;
-  font-size: 0.95rem;
-}
-
-input {
-  width: 100%;
-  padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,.2);
-  outline: none;
-  font-size: 1rem;
-}
-
-input:focus {
-  border-color: #0b2a6f;
-  box-shadow: 0 0 0 3px rgba(11, 42, 111, 0.2);
-}
-
-/* bottone */
+/* Bottone elegante */
 .login-button {
   width: 100%;
-  padding: 14px;
+  padding: 16px;
   border: none;
-  border-radius: 12px;
+  border-radius: 14px;
   font-weight: 700;
   font-size: 1rem;
   color: #fff;
-  background: linear-gradient(180deg, #0b2a6f, #0a3a8a);
+  background: linear-gradient(135deg, #1976d2, #0d47a1);
   cursor: pointer;
-  transition: transform 0.15s ease, filter 0.15s ease;
+  transition: all 0.25s ease, transform 0.15s ease;
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(25, 118, 210, 0.3);
+    filter: brightness(1.1);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    filter: brightness(1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 }
 
-.login-button:hover {
-  transform: translateY(-2px);
-  filter: brightness(1.1);
-}
-
-.login-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-}
-
-/* link e footer */
+/* Link e footer */
 .link {
-  color: #0b2a6f;
+  color: #0d47a1;
   font-weight: 600;
   text-decoration: none;
-}
+  transition: color 0.2s ease;
 
-.link:hover {
-  text-decoration: underline;
+  &:hover {
+    color: #1565c0;
+    text-decoration: underline;
+  }
 }
 
 .footer {
-  margin-top: 14px;
+  margin-top: 18px;
   font-size: 0.95rem;
   opacity: 0.9;
   text-align: center;
+  color: #f0f0f0;
+}
+
+/* Effetti generali */
+* {
+  box-sizing: border-box;
 }

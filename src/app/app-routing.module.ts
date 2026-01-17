@@ -15,19 +15,19 @@ import { LogoutComponent } from './features/logout/logout.component';
 import { ErrorComponent } from './features/error/error.component';
 
 const routes: Routes = [
-  /*{ path: 'home', component: HomeComponent },
+  { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
 
   { path: 'movements', component: MovementTrackingComponent },
   { path: 'search', component: SearchPositionComponent },
 
   // ✅ QUESTA DEVE STARE PRIMA DEL **
-  { path: 'tracking/:title', component: MovementTrackingComponent },*/
+  { path: 'tracking/:title', component: MovementTrackingComponent },
 
   //logout
   { path:'logout', component: LogoutComponent },
 
-  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING, canActivate:[AuthGuardService]},
+  { path: '', component:CoreLayoutComponent, data:{title:'core view'}, children:CORE_ROUTING,},
   { path: '', component: FeaturesLayoutComponent, data:{title:'features view'}, children:FEATURES_ROUTING },
   
   { path: '**', component:ErrorComponent}

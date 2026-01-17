@@ -4,34 +4,37 @@
   <div class="left-panel">
 
     <!-- CARD DI RICERCA LIBRO -->
-<div class="search-bar-container">
-  <mat-form-field appearance="outline" class="search-bar">
-    <mat-label>Cerca libro</mat-label>
-    <mat-icon matPrefix>search</mat-icon>
-    <input
-      matInput
-      [(ngModel)]="search.name"
-      placeholder="Titolo del libro"
-      (keydown.enter)="getBooks()"
-    />
-    <button
-      mat-icon-button
-      matSuffix
-      color="primary"
-      (click)="getBooks()"
-      aria-label="Cerca"
-    >
-      <mat-icon>arrow_forward</mat-icon>
-    </button>
-  </mat-form-field>
-</div>
+    <div class="search-bar-container">
+      <mat-form-field appearance="outline" class="search-bar">
+        <mat-label>Cerca libro</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          [(ngModel)]="search.name"
+          placeholder="Titolo del libro"
+          (keydown.enter)="getBooks()"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          color="primary"
+          (click)="getBooks()"
+          aria-label="Cerca"
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
 
     <!-- ===================== LIBRI DISPONIBILI ===================== -->
     <div class="other-books">
       <div class="header">
-        <h3>📚 Libri disponibili</h3>
-        <button class="new_book"><span>+</span>Aggiungi</button>
-      </div>
+  <h3>📚 Libri disponibili</h3>
+  <button class="new-book" (click)="openAddBooksDialog()">
+    <span class="plus-icon">+</span> Aggiungi
+  </button>
+</div>
+
 
       <div class="book-cards-container">
         <mat-card class="book-card modern" *ngFor="let book of rows.results">
@@ -48,7 +51,6 @@
             >
               Vedi posizione
             </button>
-
           </mat-card-actions>
         </mat-card>
       </div>
@@ -59,45 +61,56 @@
         [pageSize]="rows.per_page"
         (pageChange)="onFooterPageChange($event)"
       ></app-paginator>
-
-      <!-- ===================== PAGINAZIONE ===================== -->
-      <!--<mat-paginator (page)="datatablePage($event)" [length]="rows.total" class="pagination" [pageSize]="rows.per_page">
-        <button
-          mat-stroked-button
-          (click)="prevPage()"
-          [disabled]="currentPage === 0"
-        >
-          ❮ Precedente
-        </button>
-
-        <span>Pagina</span>
-        <input
-          type="number"
-          min="1"
-          [max]="totalPages()"
-          [(ngModel)]="inputPage"
-          (keydown.enter)="goToInputPage()"
-          style="width: 50px; text-align: center;"
-        >
-        <span>di {{ totalPages() }}</span>
-
-        <button
-          mat-stroked-button
-          (click)="nextPage()"
-          [disabled]="currentPage >= totalPages() - 1"
-        >
-          Successivo ❯
-        </button>
-      </mat-paginator>-->
-
     </div>
   </div>
 </div>
 
+<!-- ===================== MODALE AGGIUNGI LIBRO ===================== -->
+<ng-template #addBooksDialog>
+  <h2>Aggiungi un nuovo libro</h2>
+  <form>
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>Nome libro</mat-label>
+      <input matInput [(ngModel)]="newBook.name" name="name" placeholder="Inserisci il nome">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>Scaffale</mat-label>
+      <input matInput [(ngModel)]="newBook.scaffale" name="scaffale" placeholder="Inserisci scaffale">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>X</mat-label>
+      <input matInput type="number" [(ngModel)]="newBook.x" name="x">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>Y</mat-label>
+      <input matInput type="number" [(ngModel)]="newBook.y" name="y">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>Lato</mat-label>
+      <mat-select [(ngModel)]="newBook.lato" name="lato">
+        <mat-option value="destra">Destra</mat-option>
+        <mat-option value="sinistra">Sinistra</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="width:100%">
+      <mat-label>Compagnia</mat-label>
+      <input matInput [(ngModel)]="newBook.company" name="company" placeholder="Nome compagnia">
+    </mat-form-field>
+
+    <div style="margin-top:20px; display:flex; justify-content:flex-end; gap:10px;">
+      <button mat-button mat-dialog-close>Chiudi</button>
+      <button mat-raised-button color="primary" (click)="saveBook()">Salva</button>
+    </div>
+  </form>
+</ng-template>
+
 <!-- ===================== MODALE POSIZIONE PERGAMENA ===================== -->
-<!-- Bottone aggiuntivo opzionale per aprire la pergamena -->
-<!-- Pergamena full-screen, visibile solo se showPergamena = true -->
-<div class="full-pergamena" *ngIf="pergamenaVisible" (click)="pergamenaVisible =false">
+<div class="full-pergamena" *ngIf="pergamenaVisible" (click)="pergamenaVisible = false">
   <div class="pergamena-rotolo" (click)="$event.stopPropagation()">
     <h2>📍 Posizione libro</h2>
     <p><strong>Cliente:</strong> {{ result.company.name }}</p>

@@ -1,21 +1,33 @@
 <footer class="paginator-footer" *ngIf="totalPages > 1">
+  <div class="paginator-container">
+    
+    <!-- Pulsante precedente -->
+    <button class="page-btn" (click)="prev()" [disabled]="currentPage === 1">
+      ◀ Precedente
+    </button>
 
-  <button (click)="prev()" [disabled]="currentPage === 1">◀</button>
+    <!-- Info pagina -->
+    <div class="page-info">
+      Pagina
+      <input
+        type="number"
+        [(ngModel)]="inputPage"
+        (keyup.enter)="submitPage()"
+        min="1"
+        [max]="totalPages"
+        class="page-input"
+      />
+      di <strong>{{ totalPages }}</strong>
+      <span class="total-items">| Totale: {{ totalItems }}</span>
+    </div>
 
-  <span class="page-info">
-    Pagina
-    <input
-      type="number"
-      [(ngModel)]="inputPage"
-      (keyup.enter)="submitPage()"
-      min="1"
-      class="page-input"
-    />
-    di {{ totalPages }} | Totale: {{ totalItems }}
-  </span>
+    <!-- Vai -->
+    <button class="page-btn go-btn" (click)="submitPage()">Vai</button>
 
-  <button (click)="submitPage()">Vai</button>
+    <!-- Pulsante successivo -->
+    <button class="page-btn" (click)="next()" [disabled]="currentPage === totalPages">
+      Successivo ▶
+    </button>
 
-  <button (click)="next()" [disabled]="currentPage === totalPages">▶</button>
-
+  </div>
 </footer>
