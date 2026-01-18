@@ -10,31 +10,32 @@ export class BooksService {
   constructor() {}
 
   /** Salva libri senza cancellare quelli già presenti */
-  saveBooks(books: any[]): Observable<any[]> {
-    const existingBooks = this.getBooks();
-    const allBooks = [...existingBooks, ...books];
-    localStorage.setItem(this.storageKey, JSON.stringify(allBooks));
-    console.log('Libri salvati nel localStorage:', allBooks);
-    return of(allBooks);
+  saveBook(book: any) {
+    const state = this.getState()
+
+    const index = state.books.findIndex(b => b.tempId === book.tempId)
+
+    if (index > -1){
+      state.books[index] = book
+    } else {
+      state.books.push(book)
+    }
+
+    localStorage.setItem(this.storageKey, JSON.stringify(state))
+  }
+
+  startWizard(targetCount:number){
+    const state = {
+      targetCount,
+      books: []
+    }
+    localStorage.setItem(this.storageKey, JSON.stringify(state))
   }
 
   /** Recupera tutti i libri */
-  getBooks(): any[] {
+  getState(): {targetCount:number, books:any[]} {
     const data = localStorage.getItem(this.storageKey);
-    return data ? JSON.parse(data) : [];
-  }
-
-  /** Scarica i libri come file JSON */
-  downloadBooksJson(filename: string = 'books.json'): void {
-    const books = this.getBooks();
-    const blob = new Blob([JSON.stringify(books, null, 2)], { type: 'application/json' });
-    const url = window.URL.createObjectURL(blob);
-
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    window.URL.revokeObjectURL(url);
+    return data ? JSON.parse(data) : {targetCount: 0, books:[]};
   }
 
   /** Cancella tutti i libri */

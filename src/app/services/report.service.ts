@@ -64,4 +64,10 @@ export class ReportService {
     return this.httpClient.post(url, search)
   }
 
+  getCompany(){
+    let url = this.base_url + 'companies/'
+
+    return this.httpClient.get(url)
+  }
+
 }

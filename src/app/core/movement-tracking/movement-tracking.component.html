@@ -9,32 +9,36 @@
         <div class="col history">Storico</div>
       </div>
 
-      <div class="table-row" *ngFor="let book of books">
-        <div class="col name">{{ book.bookTitle }}</div>
+      <div class="table-row" *ngFor="let book of rows.results">
+        <div class="col name">{{ book.name }}</div>
 
         <div class="col position">
-          Scaffale: {{ book.shelf || '-' }}<br>
-          Bancale: {{ book.bancale || '-' }}<br>
-          Lato: {{ book.side || '-' }}
+          Posizione: {{ book.book_status }}
         </div>
 
         <div class="col history">
-          <button (click)="selectedBook = book">Mostra storico</button>
+          <button (click)="getSortedHistory(book)">Mostra storico</button>
         </div>
       </div>
     </div>
+    <app-paginator
+      [currentPage]="rows.page"
+      [totalPages]="rows.pages"
+      [pageSize]="rows.per_page"
+      (pageChange)="onFooterPageChange($event)">
+    </app-paginator>
   </mat-card>
 </div>
 
 <!-- Modale semplice -->
 <div class="modal-backdrop" *ngIf="selectedBook">
   <div class="modal">
-    <h2>📚 Storico - {{ selectedBook.bookTitle }}</h2>
+    <h2>📚 Storico - {{ selectedBook.name }}</h2>
     <ul class="history-list">
-      <li *ngFor="let h of getSortedHistory(selectedBook)">
-        <strong>{{ h.date | date:'dd/MM/yyyy' }}</strong> - 
-        {{ h.description }}
-        <span *ngIf="h.note">({{ h.note }})</span>
+      <li *ngFor="let h of book_moves">
+        <strong>{{ h.date_add | date:'dd/MM/yyyy' }}</strong> - 
+        {{ h.from_status }} -> {{ h.to_status }}
+        <br>
       </li>
     </ul>
     <button (click)="selectedBook = null">Chiudi</button>
