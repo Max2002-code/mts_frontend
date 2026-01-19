@@ -85,8 +85,8 @@ body, html {
 /* =========================
    Icone dinamiche
    ========================= */
-.icon-success { color: #4caf50; }
-.icon-error { color: #f44336; }
+.icon-success { color: #4caf50; font-size: 25px !important; }
+.icon-error { color: #f44336; font-size: 25px !important;}
 .icon-info { color: #2196f3; }
 .icon-default { color: #888; }
 
@@ -139,4 +139,8 @@ body, html {
   font-size: 1.3rem;
   color: #999;
   margin-top: 50px;
+}
+
+.notifica-accettata{
+  background-color: #4caf50 !important;
 }

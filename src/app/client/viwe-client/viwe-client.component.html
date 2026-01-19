@@ -6,7 +6,7 @@
       type="text"
       placeholder="Cerca libro..."
       [(ngModel)]="search.name"
-      (input)="getClientBooks()"
+      (keydown.enter)="getClientBooks()"
     />
     <span class="search-icon">🔍</span>
   </div>
@@ -112,10 +112,20 @@
       <div
         class="requested-card"
         *ngFor="let book of rows_order.results; trackBy: trackByTitle; let i = index"
-        [ngClass]="'page-card-' + i"
+        [ngClass]="{
+          'status-ordinato': book.book_status === 'ordinato',
+          'status-transito': book.book_status === 'in transito'
+        }"
       >
         <div class="requested-title">📕 {{ book.name }}</div>
-        <div class="requested-status">⏳ In attesa</div>
+        <div class="requested-status">
+          <ng-container *ngIf="book.book_status === 'ordinato'">
+            ⏳ In attesa
+          </ng-container>
+          <ng-container *ngIf="book.book_status === 'in transito'">
+            🚚 In transito
+          </ng-container>
+        </div>
       </div>
     </div>
 

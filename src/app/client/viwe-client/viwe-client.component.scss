@@ -305,6 +305,18 @@ button {
   white-space: nowrap;
 }
 
+/* default / ordinato */
+.requested-card.status-ordinato {
+  border-left: 5px solid #ff9800 !important;
+  background-color: #fff3e0 !important;
+}
+
+/* in transito */
+.requested-card.status-transito {
+  border-left: 5px solid #2196f3 !important;
+  background-color: #e3f2fd !important;
+}
+
 /* ================= ANIMAZIONI ================= */
 @keyframes slideUp {
   from {

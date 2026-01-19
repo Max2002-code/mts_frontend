@@ -3,19 +3,20 @@
 
   <ng-container *ngIf="notifiche.length > 0; else vuoto">
     <div class="notifiche-grid">
-      <mat-card class="notifica-card" *ngFor="let n of notifiche" (mouseenter)="onNotificationHover(n)" [ngClass]="{'notifica-letta': n.read}">
+      <mat-card class="notifica-card" *ngFor="let n of notifiche" [ngClass]="{'notifica-letta': n.read}">
         
         <!-- HEADER -->
         <div class="notifica-header">
-          <mat-icon class="icon" [class]="getIconClass(n.tipo)">notifications</mat-icon>
+          <mat-icon class="icon" [class]="getIconClass(n.movement.order_status)">notifications</mat-icon>
           <div class="testo">
             <h4>{{ n.title }}</h4>
             <p>{{ n.message }}</p>
+            <p *ngIf="n.read">{{ n.movement.order_status }}</p>
           </div>
         </div>
 
         <!-- AZIONI -->
-        <div class="azioni">
+        <div class="azioni" *ngIf="!n.read">
           <button mat-raised-button class="accetta" (click)="accetta(n)">
             ✔ Accetta
           </button>

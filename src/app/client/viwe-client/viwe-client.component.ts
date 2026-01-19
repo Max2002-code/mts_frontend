@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LocationsService } from 'src/app/services/locations.service';
 import { Location } from 'src/app/models/location.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/shared/auth/auth.service';
@@ -66,7 +65,7 @@ export class ViweClientComponent implements OnInit {
   requestedCurrentPage: number = 0;
   requestedPageInput: number = 1;
 
-  constructor(private locationsService: LocationsService, private authService:AuthService, private http:ReportService) {}
+  constructor(private authService:AuthService, private http:ReportService) {}
 
   datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}, row_type:any){
     this.inputPage = (pageInfo.offset ?? 0) + 1;
@@ -119,48 +118,6 @@ export class ViweClientComponent implements OnInit {
 
     this.userBooks = myBooks.map(title => ({ title, status: 'in possesso' }));
     this.filteredUserBooks = [...this.userBooks];
-  }
-
-  loadAvailableBooks(): void {
-    const allLocations: Location[] = this.locationsService.getAll();
-    const booksInWarehouse: string[] = [];
-
-    allLocations.forEach(loc => {
-      loc.books.forEach(book => {
-        if (!this.userBooks.some(ub => ub.title === book)) {
-          booksInWarehouse.push(book);
-        }
-      });
-    });
-
-    // Aggiungiamo altri libri random
-    const extraBooks = [
-      'Foundation', 'The Hobbit', 'The Witcher', 'Brave New World',
-      'Fahrenheit 451', 'The Pragmatic Programmer', 'Refactoring',
-      'Clean Architecture'
-    ];
-
-    this.availableBooks = Array.from(new Set([...booksInWarehouse, ...extraBooks]));
-    this.filteredAvailableBooks = [...this.availableBooks];
-  }
-
-  /* ==================== SEARCH ==================== */
-  filterBooks(): void {
-    
-    /*const search = this.searchTerm.toLowerCase().trim();
-
-    this.filteredUserBooks = this.userBooks
-      .filter(book => book.status !== 'richiesto')
-      .filter(book => book.title.toLowerCase().includes(search));
-
-    this.filteredAvailableBooks = this.availableBooks
-      .filter(book => book.toLowerCase().includes(search));
-
-    this.userCurrentPage = 0;
-    this.availableCurrentPage = 0;
-    this.requestedCurrentPage = 0;
-
-    this.updatePageInputs();*/
   }
 
   /* ==================== AGGIORNA INPUT PAGINA ==================== */

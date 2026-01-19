@@ -70,4 +70,10 @@ export class ReportService {
     return this.httpClient.get(url)
   }
 
+  postNotificationResponse(pk:number, response:boolean){
+    let url = this.base_url + `notification/response/${pk}/`
+
+    return this.httpClient.post(url, {response:response})
+  }
+
 }

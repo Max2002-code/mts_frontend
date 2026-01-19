@@ -22,17 +22,11 @@ export class NotificaComponent implements OnInit {
     })
   }
 
-  onNotificationHover(notifications:any){
-    if (!notifications.read) return
-
-    notifications.read = false
-  }
-
   // Determina la classe dell’icona in base al tipo
   getIconClass(tipo: string): string {
     switch (tipo) {
-      case 'success': return 'icon-success';
-      case 'error': return 'icon-error';
+      case 'accettato': return 'icon-success';
+      case 'rifiutato': return 'icon-error';
       case 'info': return 'icon-info';
       default: return 'icon-default';
     }
@@ -40,13 +34,15 @@ export class NotificaComponent implements OnInit {
 
   // Segna la notifica come accettata
   accetta(notifica: any) {
-    notifica.letta = true;
-    console.log('Accettata:', notifica);
+    this.http.postNotificationResponse(notifica.id, true).subscribe(data => {
+      this.notifiche = this.notifiche.map(n => n.id === data.id ? data:n)
+    })
   }
 
   // Segna la notifica come rifiutata
   rifiuta(notifica: any) {
-    notifica.letta = true;
-    console.log('Rifiutata:', notifica);
+    this.http.postNotificationResponse(notifica.id, false).subscribe(data => {
+      this.notifiche = this.notifiche.map(n => n.id === data.id ? data:n)
+    })
   }
 }
