@@ -16,6 +16,7 @@ export class LoginComponent {
 
   loginFailed: boolean = false
   loginSubmit: Boolean = false
+  showPassword = false;
 
   constructor(private router:Router, private authService:AuthService, private report:ReportService) { }
 
@@ -53,11 +54,5 @@ export class LoginComponent {
   ngOnDestroy() {
     this.unsubscribe.forEach((sb) => sb.unsubscribe())
   }
-
-showPassword = false;
-
-togglePassword(): void {
-  this.showPassword = !this.showPassword;
-}
 
 }

@@ -24,34 +24,43 @@
           name="username"
           formControlName="username"
           placeholder="Inserisci username"
+          [class.invalid]="loginFailed && lf['username'].invalid"
         />
+        <p class="error-message" *ngIf="loginFailed && lf['username'].invalid">
+          Username non valido
+        </p>
       </div>
 
       <!-- CAMPO PASSWORD -->
-<div class="field">
-  <label for="password">Password</label>
-
-  <div class="password-wrapper">
-    <input
-      id="password"
-      [type]="showPassword ? 'text' : 'password'"
-      name="password"
-      formControlName="password"
-      placeholder="Inserisci password"
-    />
-
-    <button
-      type="button"
-      class="toggle-password"
-      (click)="togglePassword()"
-      aria-label="Mostra/Nascondi password"
-    >
-      {{ showPassword ? '🙈' : '👁️' }}
-    </button>
-  </div>
+      <div class="field">
+        <label for="password">Password</label>
+<div class="password-wrapper">
+  <input
+    id="password"
+    [type]="showPassword ? 'text' : 'password'"
+    formControlName="password"
+    placeholder="Inserisci password"
+    [class.invalid]="loginFailed"
+  />
+  <button
+    type="button"
+    class="toggle-password"
+    (click)="showPassword = !showPassword"
+    aria-label="Mostra/Nascondi password"
+  >
+    <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
+  </button>
 </div>
 
+        <p class="error-message" *ngIf="loginFailed && lf['password'].invalid">
+          Password non valida
+        </p>
+      </div>
 
+      <!-- MESSAGGIO GENERALE ERRORE LOGIN -->
+      <p class="error-message" *ngIf="loginFailed && loginForm.valid">
+        Username o password non validi
+      </p>
 
       <!-- PULSANTE LOGIN -->
       <button
@@ -61,23 +70,6 @@
       >
         Accedi
       </button>
-
-      <!-- OPZIONI EXTRA (COMMENTATE) -->
-      <!--
-      <div class="row">
-        <label class="check">
-          <input type="checkbox" name="remember" ngModel />
-          Ricordami
-        </label>
-
-        <a class="link" routerLink="/forgot-password">Password dimenticata?</a>
-      </div>
-
-      <p class="footer">
-        Non hai un account? <a class="link" routerLink="/register">Registrati</a>
-      </p>
-      -->
-
     </form>
   </div>
 </div>
