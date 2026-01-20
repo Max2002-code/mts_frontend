@@ -2,20 +2,26 @@
     <div class="header">
         <mat-toolbar color="primary" class="main-toolbar">
             <span class="logo">📚 Library Manager</span>
-            <span class="spacer"></span>
-            <button class="notifications" mat-icon-button routerLink="/notifica" routerLinkActive="active-link">
-                <mat-icon *ngIf="unread_count > 0" [matBadge]="unread_count" matBadgeColor="warn" matBadgeSize="small"
-                    matBadgeOverlap="true">
-                    notifications
-                </mat-icon>
+            <span>👤 {{ currentUser?.username }}</span>
+            <div class="buttons">
+                <button class="notifications" mat-icon-button routerLink="/notifica" routerLinkActive="active-link">
+                    <mat-icon *ngIf="unread_count > 0" [matBadge]="unread_count" matBadgeColor="warn" matBadgeSize="small"
+                        matBadgeOverlap="true">
+                        notifications
+                    </mat-icon>
 
-                <mat-icon *ngIf="unread_count === 0">
-                    notifications
-                </mat-icon>
-            </button>
-            <button mat-button routerLink="/home" routerLinkActive="active-link">Home</button>
-            <button mat-button routerLink="/search" routerLinkActive="active-link">Cerca Libro</button>
-            <button mat-button routerLink="/movements" routerLinkActive="active-link">Tracciamento</button>
+                    <mat-icon *ngIf="unread_count === 0">
+                        notifications
+                    </mat-icon>
+                </button>
+                <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/home" routerLinkActive="active-link">Home</button>
+                <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/search" routerLinkActive="active-link">Cerca Libro</button>
+                <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/movements" routerLinkActive="active-link">Tracciamento</button>
+                <button class="logout-btn" (click)="logout()">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
+            </div>
         </mat-toolbar>
     </div>
     <div class="pages-container">

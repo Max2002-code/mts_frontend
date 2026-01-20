@@ -10,8 +10,6 @@ const routes: Routes = [
     path: '',
     children: [
       { path: 'login', component: LoginComponent },
-      { path: 'client', component: ViweClientComponent }, // ✅ aggiunta rotta client
-      { path: 'notifica', component: NotificaComponent}
     ]
   }
 ]
