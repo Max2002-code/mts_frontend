@@ -1,75 +1,62 @@
 <div class="page">
   <div class="stage" aria-label="Login">
 
-    <!-- FORM LOGIN -->
-    <form
-      class="form"
-      [formGroup]="loginForm"
-      (ngSubmit)="onLogin()"
-      #f="ngForm"
-    >
-      <!-- TITOLO CON IMMAGINE -->
-      <img
-        class="login-title-image"
-        src="../../../assets/images/MTS LOGO.png"
-        alt="Accedi"
-      />
+    <form class="form" [formGroup]="loginForm" (ngSubmit)="onLogin()">
 
-      <!-- CAMPO USERNAME -->
+      <!-- Logo -->
+      <img class="login-title-image" src="../../../assets/images/MTS LOGO.png" alt="Accedi" />
+
+      <!-- Username -->
       <div class="field">
         <label for="username">Username</label>
         <input
           id="username"
           type="text"
-          name="username"
           formControlName="username"
           placeholder="Inserisci username"
-          [class.invalid]="loginFailed && lf['username'].invalid"
+          [class.invalid]="loginFailed && (lf['username'].invalid || loginFailed)"
         />
-        <p class="error-message" *ngIf="loginFailed && lf['username'].invalid">
-          Username non valido
-        </p>
       </div>
 
-      <!-- CAMPO PASSWORD -->
-      <div class="field">
-        <label for="password">Password</label>
-<div class="password-wrapper">
-  <input
-    id="password"
-    [type]="showPassword ? 'text' : 'password'"
-    formControlName="password"
-    placeholder="Inserisci password"
-    [class.invalid]="loginFailed"
-  />
-  <button
-    type="button"
-    class="toggle-password"
-    (click)="showPassword = !showPassword"
-    aria-label="Mostra/Nascondi password"
-  >
-    <i class="bi" [class.bi-eye]="!showPassword" [class.bi-eye-slash]="showPassword"></i>
-  </button>
+      <!-- Password -->
+<div class="field">
+  <label for="password">Password</label>
+
+  <div class="password-wrapper">
+    <input
+      id="password"
+      [type]="showPassword ? 'text' : 'password'"
+      formControlName="password"
+      placeholder="Inserisci password"
+      [class.invalid]="loginFailed"
+    />
+
+    <button
+      type="button"
+      class="toggle-password"
+      (click)="this.showPassword = !this.showPassword;"
+      aria-label="Mostra/Nascondi password"
+    >
+      <i
+        class="bi"
+        [class.bi-eye]="!showPassword"
+        [class.bi-eye-slash]="showPassword"
+      ></i>
+    </button>
+  </div>
 </div>
 
-        <p class="error-message" *ngIf="loginFailed && lf['password'].invalid">
-          Password non valida
-        </p>
-      </div>
 
-      <!-- MESSAGGIO GENERALE ERRORE LOGIN -->
-      <p class="error-message" *ngIf="loginFailed && loginForm.valid">
-        Username o password non validi
+      <!-- Messaggio errore -->
+      <p class="error-message" *ngIf="loginFailed">
+        ⚠️ Username o password non validi
       </p>
 
-      <!-- PULSANTE LOGIN -->
-      <button
-        type="submit"
-        class="login-button"
-        aria-label="Accedi"
-      >
+      <!-- Bottone login -->
+      <button type="submit" class="login-button" aria-label="Accedi">
         Accedi
       </button>
+
     </form>
   </div>
 </div>

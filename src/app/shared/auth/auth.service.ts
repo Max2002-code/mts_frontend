@@ -36,24 +36,28 @@ export class AuthService implements OnDestroy {
     this.currentUserSubject?.next(user)
   }
 
-  login(username:string, password:string): Observable<UserType>{
-    this.isLoadingSubject?.next(true)
+login(username: string, password: string): Observable<UserType> {
+  this.isLoadingSubject?.next(true);
 
-    return this.report.login(username, password).pipe(
-      map((auth:UserModel)=>{
-        const result = this.setAuthFromLocalStorage(auth)
-        return result
-      }), switchMap(()=>{
-        const user = this.getUserByToken()
-        return user
-      }),
-      catchError((err)=>{
-        console.error(err)
-        return of(undefined)
-      }),
-      finalize(()=> this.isLoadingSubject?.next(false))
-    )
-  }
+  return this.report.login(username, password).pipe(
+    map((auth: UserModel) => {
+      if (!auth || !auth.key) {
+        // Login fallito → manda undefined
+        throw new Error('Login fallito');
+      }
+      this.setAuthFromLocalStorage(auth);
+      return auth;
+    }),
+    switchMap(() => this.getUserByToken()),
+    catchError((err) => {
+      console.error('Login error:', err);
+      return of(undefined); // login fallito
+    }),
+    finalize(() => this.isLoadingSubject?.next(false))
+  );
+}
+
+
 
   logout(){
     localStorage.removeItem(this.authLocalStorageToken)
