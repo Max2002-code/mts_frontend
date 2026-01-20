@@ -1,3 +1,32 @@
+<!-- ================= NAVBAR ================= -->
+<nav class="top-navbar">
+  <!-- SINISTRA -->
+  <div class="navbar-left">
+    <span class="app-title">📖 Book Manager</span>
+  </div>
+
+  <!-- CENTRO -->
+  <div class="navbar-center" *ngIf="currentUser">
+    👤 {{ currentUser.username }}
+  </div>
+
+  <!-- DESTRA -->
+  <div class="navbar-right">
+    <!-- Notifiche -->
+    <div class="nav-icon notification">
+      <i class="fa-solid fa-bell"></i>
+      <span class="badge">3</span>
+    </div>
+
+    <!-- Logout -->
+    <button class="logout-btn" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+    </button>
+  </div>
+</nav>
+
+
 <div class="books-dashboard">
 
   <!-- ================= MOTORE DI RICERCA ================= -->

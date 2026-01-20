@@ -258,4 +258,26 @@ export class ViweClientComponent implements OnInit {
   trackByTitle(index: number, book: UserBook): string {
     return book.title;
   }
+
+settingsOpen: boolean = false;
+
+toggleSettings(): void {
+  this.settingsOpen = !this.settingsOpen;
+}
+
+closeSettings(): void {
+  this.settingsOpen = false;
+}
+
+logout(): void {
+  this.authService.logout(); // se esiste
+  // oppure
+  // localStorage.clear();
+  // this.router.navigate(['/login']);
+}
+
+goToProfile(): void {
+  console.log('Vai al profilo');
+}
+
 }
