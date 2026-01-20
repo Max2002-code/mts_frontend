@@ -54,4 +54,10 @@ export class LoginComponent {
     this.unsubscribe.forEach((sb) => sb.unsubscribe())
   }
 
+showPassword = false;
+
+togglePassword(): void {
+  this.showPassword = !this.showPassword;
+}
+
 }

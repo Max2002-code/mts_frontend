@@ -1,6 +1,6 @@
 <div class="page">
   <div class="stage" aria-label="Login">
-    
+
     <!-- FORM LOGIN -->
     <form
       class="form"
@@ -8,14 +8,12 @@
       (ngSubmit)="onLogin()"
       #f="ngForm"
     >
-      <!-- TITOLO -->
-     <!-- Titolo con immagine -->
-<img
-  class="login-title-image"
-  src="../../../assets/images/MTS LOGO.png"
-  alt="Accedi"
-/>
-
+      <!-- TITOLO CON IMMAGINE -->
+      <img
+        class="login-title-image"
+        src="../../../assets/images/MTS LOGO.png"
+        alt="Accedi"
+      />
 
       <!-- CAMPO USERNAME -->
       <div class="field">
@@ -25,19 +23,35 @@
           type="text"
           name="username"
           formControlName="username"
+          placeholder="Inserisci username"
         />
       </div>
 
       <!-- CAMPO PASSWORD -->
-      <div class="field">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          type="password"
-          name="password"
-          formControlName="password"
-        />
-      </div>
+<div class="field">
+  <label for="password">Password</label>
+
+  <div class="password-wrapper">
+    <input
+      id="password"
+      [type]="showPassword ? 'text' : 'password'"
+      name="password"
+      formControlName="password"
+      placeholder="Inserisci password"
+    />
+
+    <button
+      type="button"
+      class="toggle-password"
+      (click)="togglePassword()"
+      aria-label="Mostra/Nascondi password"
+    >
+      {{ showPassword ? '🙈' : '👁️' }}
+    </button>
+  </div>
+</div>
+
+
 
       <!-- PULSANTE LOGIN -->
       <button
