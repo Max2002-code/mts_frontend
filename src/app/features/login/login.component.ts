@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { first, Subscription } from 'rxjs';
 import { UserModel } from 'src/app/models/user.model';
 import { ReportService } from 'src/app/services/report.service';
+import { ToastService } from 'src/app/services/toast.service';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class LoginComponent implements OnDestroy {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private report: ReportService
+    private report: ReportService,
+    private toast:ToastService,
   ) {}
 
   loginForm = new UntypedFormGroup({
@@ -60,7 +62,7 @@ export class LoginComponent implements OnDestroy {
           if (user.company.name === 'Mts') {
             this.router.navigate(['/home']);
           } else {
-            this.router.navigate(['/client']);
+            this.router.navigate([user.change_pwd ? '/change_pwd' : '/client'])
           }
         } else {
           this.loginFailed = true; // credenziali errate

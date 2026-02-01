@@ -3,6 +3,7 @@ import { Location } from 'src/app/models/location.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { ReportService } from 'src/app/services/report.service';
+import { ToastService } from 'src/app/services/toast.service';
 
 interface UserBook {
   title: string;
@@ -65,16 +66,23 @@ export class ViweClientComponent implements OnInit {
   requestedCurrentPage: number = 0;
   requestedPageInput: number = 1;
 
-  constructor(private authService:AuthService, private http:ReportService) {}
+  pages = {
+    magazzino:1,
+    order:1,
+    out:1,
+  }
 
-  datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}, row_type:any){
-    this.inputPage = (pageInfo.offset ?? 0) + 1;
-    row_type = {page:this.inputPage, per_page:row_type.per_page, results:[], total:row_type.total, pages:row_type.pages}
+  constructor(private authService:AuthService, private http:ReportService, private toast:ToastService) {}
+
+  datatablePage(pageInfo: {count?: number, pageSize?:number, limit?:number, offset?:number}, row_type:any, key: 'magazzino'|'order'|'out'){
+    const page = (pageInfo.offset ?? 0) + 1;
+    //row_type = {page:this.inputPage, per_page:row_type.per_page, results:[], total:row_type.total, pages:row_type.pages}
+    this.pages[key] = page
 
     this.getClientBooks();
   }
 
-  onFooterPageChange(page:number, rows_type:any){
+  onFooterPageChange(page:number, rows_type:any, key:'magazzino'|'order'|'out'){
     const totalPages = Math.ceil((rows_type.total ?? 0) / rows_type.per_page);
 
 
@@ -88,14 +96,14 @@ export class ViweClientComponent implements OnInit {
       count: rows_type.total
     };
 
-    this.datatablePage(pageInfo, rows_type);
+    this.datatablePage(pageInfo, rows_type, key);
 
   }
 
   getClientBooks(){
     let data = this.search
 
-    this.http.postClientBooksList(data, this.inputPage).subscribe(data => {
+    this.http.postClientBooksList(data, this.pages.magazzino, this.pages.order, this.pages.out).subscribe(data => {
       this.rows_mag = data.magazzino
       this.rows_order = data.order
       this.rows_out = data.out
@@ -195,25 +203,27 @@ export class ViweClientComponent implements OnInit {
 
   /* ==================== AZIONI ==================== */
   deliverBook(book: any, type_move:string): void {
-    if (book.book_status !== 'ricevuto' && type_move !== 'ordinato'){
-      return
-    }
-
-    this.http.postNewOrderBook(book.id, type_move).subscribe(data => {
-      if (data.success){
-        this.getClientBooks()
+    this.http.postNewOrderBook(book.id, type_move).subscribe({
+      next: data => {
+        if (data.success){
+          this.getClientBooks()
+        }
+      }, error: err => {
+        console.error(err)
+        this.toast.error(err)
       }
     })
   }
 
   requestBookFromWarehouse(book:any, type_move:string): void {
-    if (book.book_status !== 'magazzino' && type_move !== 'ordinato'){
-      return
-    }
-
-    this.http.postNewOrderBook(book.id, type_move).subscribe(data => {
-      if (data.success){
-        this.getClientBooks()
+    this.http.postNewOrderBook(book.id, type_move).subscribe({
+      next: data => {
+        if (data.success){
+          this.getClientBooks()
+        }
+      }, error: err => {
+        console.error(err)
+        this.toast.error(err)
       }
     })
   }

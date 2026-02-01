@@ -5,6 +5,7 @@ import { SearchPositionComponent } from "./search-position/search-position.compo
 import { NotificaComponent } from "./notifica/notifica.component";
 import { MovementTrackingComponent } from "./movement-tracking/movement-tracking.component";
 import { ViweClientComponent } from "../client/viwe-client/viwe-client.component";
+import { AdminUsersComponent } from "./admin-users/users-management.component";
 
 const routes: Routes = [
     {
@@ -15,6 +16,7 @@ const routes: Routes = [
             { path: 'notifica', component:NotificaComponent },
             { path: 'movements', component: MovementTrackingComponent },
             { path: 'client', component: ViweClientComponent }, // ✅ aggiunta rotta client
+            { path: 'admin-users', component: AdminUsersComponent }
         ]
     }
 ]

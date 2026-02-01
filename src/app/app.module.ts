@@ -27,6 +27,7 @@ import { StoreModule } from '@ngrx/store';
 import { ViweClientComponent } from './client/viwe-client/viwe-client.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatBadgeModule } from '@angular/material/badge';
+import { ToastComponent } from './features/toast/toast.component';
 
 
 export interface AppState {
@@ -51,6 +52,7 @@ function appInitializer(authService: AuthService) {
     FeaturesLayoutComponent,
     CoreLayoutComponent,
     ViweClientComponent,
+    ToastComponent,
   ],
   imports: [
     BrowserModule,

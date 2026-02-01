@@ -47,22 +47,8 @@
               [currentPage]="rows_out.page"
               [totalPages]="rows_out.pages"
               [pageSize]="rows_out.per_page"
-              (pageChange)="onFooterPageChange($event, rows_out)"
+              (pageChange)="onFooterPageChange($event, rows_out, 'out')"
             ></app-paginator>
-        <!--<button (click)="userPrevPage()" [disabled]="userCurrentPage === 0">⬅</button>
-
-        <input
-          type="number"
-          [(ngModel)]="userPageInput"
-          (change)="setUserPage()"
-          [min]="1"
-          [max]="userTotalPages"
-          class="page-input"
-        />
-
-        di {{ userTotalPages }}
-
-        <button (click)="userNextPage()" [disabled]="userCurrentPage >= userTotalPages - 1">➡</button>-->
       </div>
 
     </div>
@@ -96,7 +82,7 @@
               [currentPage]="rows_mag.page"
               [totalPages]="rows_mag.pages"
               [pageSize]="rows_mag.per_page"
-              (pageChange)="onFooterPageChange($event, rows_mag)"
+              (pageChange)="onFooterPageChange($event, rows_mag, 'magazzino')"
             ></app-paginator>
       </div>
 
@@ -135,7 +121,7 @@
         [currentPage]="rows_order.page"
         [totalPages]="rows_order.pages"
         [pageSize]="rows_order.per_page"
-        (pageChange)="onFooterPageChange($event, rows_order)"
+        (pageChange)="onFooterPageChange($event, rows_order, 'order')"
       ></app-paginator>
     </div>
   </div>

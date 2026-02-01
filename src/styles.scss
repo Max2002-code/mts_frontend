@@ -2,3 +2,35 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.toast-container {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 999999;
+  pointer-events: none;
+}
+
+/* il vero toast */
+.toast {
+  min-width: 250px;
+  max-width: 400px;
+  background: white;
+  color: #1f2933;
+  padding: 14px 18px;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+  font-size: 14px;
+  pointer-events: auto;
+  animation: slideIn 0.3s ease;
+}
+
+/* colori */
+.toast.success { border-left: 5px solid #22c55e; }
+.toast.error { border-left: 5px solid #ef4444; }
+
+/* animazione */
+@keyframes slideIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}

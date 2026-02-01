@@ -1,0 +1,54 @@
+<div class="reset-wrapper">
+  <div class="reset-card">
+
+    <div class="left">
+      <h2 class="title">🔐 MTS Manager — Accesso sicuro</h2>
+      <h3 class="subtitle">Imposta la nuova password</h3>
+      <p class="desc">
+        Per accedere all'applicativo devi scegliere una nuova password sicura.
+        Deve essere lunga almeno 8 caratteri e non simile alla precedente.
+      </p>
+
+      <div class="show_pw">
+        <input type="checkbox" id="showPw" [(ngModel)]="showPassword">
+        <label for="showPw">
+          {{ showPassword ? 'Nascondi password' : 'Mostra password' }}
+        </label>
+      </div>
+
+      <label>Nuova password</label>
+      <input [(ngModel)]="new_password" [type]="showPassword ? 'text' : 'password' " id="new_password" placeholder="Inserisci la nuova password" />
+
+      <p class="info">Lunghezza minima: 8</p>
+
+      <label>Conferma nuova password</label>
+      <input [(ngModel)]="confirm_password" [type]="showPassword ? 'text' : 'password'" placeholder="Ripeti la nuova password" />
+
+      <button class="btn-primary" (click)="reset_password(new_password, confirm_password)" >Imposta password</button>
+    </div>
+
+    <div class="right">
+      <h3>Perché questa password?</h3>
+      <p>
+        Usiamo validatori forti per proteggere i fascicoli e i dati sensibili.
+      </p>
+
+      <div class="feature">
+        <span>🛡️</span>
+        <div>
+          <h4>Protezione</h4>
+          <p>Hashing avanzato e controlli di complessità.</p>
+        </div>
+      </div>
+
+      <div class="feature">
+        <span>➕</span>
+        <div>
+          <h4>Comodità</h4>
+          <p>Dopo il cambio rimarrai autenticato.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

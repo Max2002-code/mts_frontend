@@ -1,4 +1,25 @@
-<div class="tracking-dashboard">
+<div class="tracking-dashboard" *ngIf="showPage">
+  <div class="search-bar-container">
+      <mat-form-field appearance="outline" class="search-bar">
+        <mat-label>Cerca libro</mat-label>
+        <mat-icon matPrefix>search</mat-icon>
+        <input
+          matInput
+          [(ngModel)]="search.name"
+          placeholder="Titolo del libro"
+          (keydown.enter)="getMovements()"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          color="primary"
+          (click)="getMovements()"
+          aria-label="Cerca"
+        >
+          <mat-icon>arrow_forward</mat-icon>
+        </button>
+      </mat-form-field>
+    </div>
   <mat-card class="books-card full-width elevated">
     <mat-card-title>📚 Elenco Libri</mat-card-title>
 

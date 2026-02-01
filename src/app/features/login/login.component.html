@@ -19,32 +19,30 @@
       </div>
 
       <!-- Password -->
-<div class="field">
-  <label for="password">Password</label>
+      <div class="field">
+        <label for="password">Password</label>
 
-  <div class="password-wrapper">
-    <input
-      id="password"
-      [type]="showPassword ? 'text' : 'password'"
-      formControlName="password"
-      placeholder="Inserisci password"
-      [class.invalid]="loginFailed"
-    />
+        <div class="password-wrapper">
+          <input
+            id="password"
+            [type]="showPassword ? 'text' : 'password'"
+            formControlName="password"
+            placeholder="Inserisci password"
+            [class.invalid]="loginFailed"
+          />
 
-    <button
-      type="button"
-      class="toggle-password"
-      (click)="this.showPassword = !this.showPassword;"
-      aria-label="Mostra/Nascondi password"
-    >
-      <i
-        class="bi"
-        [class.bi-eye]="!showPassword"
-        [class.bi-eye-slash]="showPassword"
-      ></i>
-    </button>
-  </div>
-</div>
+          <button
+            type="button"
+            class="toggle-password"
+            (click)="this.showPassword = !this.showPassword;"
+            aria-label="Mostra/Nascondi password">
+            <i class="bi"
+              [class.bi-eye]="!showPassword"
+              [class.bi-eye-slash]="showPassword">
+            </i>
+          </button>
+        </div>
+      </div>
 
 
       <!-- Messaggio errore -->

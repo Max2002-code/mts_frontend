@@ -16,6 +16,7 @@ export class UserModel extends AuthModel {
     full_name = ''
     user_type = ''
     is_superuser = false
+    change_pwd = true
     company: Company = new Company
 
     constructor(init?: Partial<UserModel>) {
@@ -33,6 +34,7 @@ export class UserModel extends AuthModel {
         this.full_name = user.full_name || ''
         this.user_type = user.user_type || ''
         this.is_superuser = user.is_superuser || false
+        this.change_pwd = user.change_pwd || true
         
         if (user.company){
             this.company = Object.assign(new Company(), user.company)

@@ -167,6 +167,17 @@
   }
 }
 
+.search-bar-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+
+  .search-bar {
+    width: 100%;
+    max-width: 400px;
+  }
+}
+
 /* Animazioni modale */
 @keyframes fadeIn {
   from { opacity: 0; }
@@ -176,4 +187,10 @@
 @keyframes scaleIn {
   from { transform: scale(0.95); opacity: 0; }
   to { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 480px) {
+  .search-bar-container .search-bar {
+    max-width: 90vw;
+  }
 }

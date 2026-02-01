@@ -11,6 +11,7 @@ import { AuthService } from 'src/app/shared/auth/auth.service';
 })
 export class HomeComponent implements OnInit{
   currentUser: UserModel | undefined
+  showPage:boolean = false
 
   book_in_magazine:number = 0
   book_export: number = 0
@@ -30,8 +31,19 @@ export class HomeComponent implements OnInit{
     this.router.navigate(['/movements']);
   }
 
+  goToAdminUsers():void {
+    this.router.navigate(['/admin-users'])
+  }
+
   ngOnInit(): void {
     this.currentUser = this.authService.getUserFromLocalStorage()
+
+    if (this.currentUser?.company?.name === 'Mts'){
+      this.showPage = true
+    } else {
+      alert('NON SEI AUTORIZZATO AD ENTRARE I QUESTA PAGINA!')
+      this.router.navigate(['/client'])
+    }
 
     this.http.getHomeStats().subscribe(data=>{
       this.book_in_magazine = data['book_in_magazine']

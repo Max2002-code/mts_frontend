@@ -16,7 +16,7 @@
         </div>
 
         <!-- AZIONI -->
-        <div class="azioni" *ngIf="!n.read">
+        <div class="azioni" *ngIf="!n.read && currentuUser?.company?.name === 'Mts'">
           <button mat-raised-button class="accetta" (click)="accetta(n)">
             ✔ Accetta
           </button>

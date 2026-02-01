@@ -68,122 +68,125 @@
 <!-- ===================== MODALE AGGIUNGI LIBRO ===================== -->
 <!-- OVERLAY -->
 <div class="overlay" *ngIf="showModal">
+  <div class="overlay-grid">
+    <!-- Freccia sinistra -->
+     <div class="col arrow-col"></div>
+    <button
+      class="arrow"
+      *ngIf="step === 2 && currentIndex > 0"
+      (click)="prevBook()">
+      ‹
+    </button>
 
-  <!-- Freccia sinistra -->
-  <button
-    class="arrow left"
-    *ngIf="step === 2 && currentIndex > 0"
-    (click)="prevBook()">
-    ‹
-  </button>
+    <!-- MODALE -->
+    <div class="modal">
 
-  <!-- MODALE -->
-  <div class="modal">
-
-    <!-- STEP 1 -->
-    <div *ngIf="step === 1">
-      <h2>Quanti libri vuoi aggiungere?</h2>
-
-      <mat-form-field appearance="fill" style="width:100%">
-        <mat-label>Numero di libri</mat-label>
-        <input matInput type="number" min="1" [(ngModel)]="booksCount">
-      </mat-form-field>
-
-      <div class="actions">
-        <button mat-button (click)="close()">Annulla</button>
-        <button
-          mat-raised-button
-          color="primary"
-          (click)="startBooks()"
-          [disabled]="!booksCount || booksCount < 1">
-          Avanti
-        </button>
-      </div>
-    </div>
-
-    <!-- STEP 2 -->
-    <div *ngIf="step === 2">
-      <form #bookForm="ngForm">
-        <h2>Libro {{ currentIndex + 1 }} di {{ booksCount }}</h2>
+      <!-- STEP 1 -->
+      <div *ngIf="step === 1">
+        <h2>Quanti libri vuoi aggiungere?</h2>
 
         <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Nome libro</mat-label>
-          <input matInput required #name="ngModel" [(ngModel)]="currentBook.name" name="name">
-          <mat-error *ngIf="name.invalid && name.touched">Campo Obligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Scaffale</mat-label>
-          <input matInput #scaffale="ngModel" [(ngModel)]="currentBook.scaffale" name="scaffale">
-          <mat-error *ngIf="scaffale.invalid && scaffale.touched">Campo Obligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Bancale</mat-label>
-          <input matInput #bancale="ngModel" [(ngModel)]="currentBook.bancale" name="bancale">
-          <mat-error *ngIf="bancale.invalid && bancale.touched">Campo Obligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>X</mat-label>
-          <input matInput required #x="ngModel" type="number" [(ngModel)]="currentBook.x" name="x">
-          <mat-error *ngIf="x.invalid && x.touched">Campo Obligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Y</mat-label>
-          <input matInput required #y="ngModel" type="number" [(ngModel)]="currentBook.y" name="y">
-          <mat-error *ngIf="y.invalid && y.touched">Campo Obligatorio</mat-error>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Lato</mat-label>
-          <mat-select [(ngModel)]="currentBook.lato" name="lato">
-            <mat-option value="dx">Destra</mat-option>
-            <mat-option value="sx">Sinistra</mat-option>
-          </mat-select>
-        </mat-form-field>
-
-        <mat-form-field appearance="fill" style="width:100%">
-          <mat-label>Compagnia</mat-label>
-          <mat-select required name="company" [(ngModel)]="currentBook.company" #company="ngModel" >
-            <mat-option *ngFor="let company of companies" [value]="company.id" >{{ company.name }}</mat-option>
-          </mat-select>
-          <mat-error *ngIf="company.invalid && company.touched">Campo Obligatorio</mat-error>
+          <mat-label>Numero di libri</mat-label>
+          <input matInput type="number" min="1" [(ngModel)]="booksCount">
         </mat-form-field>
 
         <div class="actions">
-          <button mat-button (click)="close()">Chiudi</button>
+          <button mat-button (click)="close()">Annulla</button>
           <button
             mat-raised-button
             color="primary"
-            type="button"
-            *ngIf="currentIndex === booksCount - 1"
-            [disabled]="!isCurrentBookValid()"
-            (click)="saveBooks()">
-            Salva
+            (click)="startBooks()"
+            [disabled]="!booksCount || booksCount < 1">
+            Avanti
           </button>
         </div>
-      </form>
+      </div>
+
+      <!-- STEP 2 -->
+      <div *ngIf="step === 2">
+        <form #bookForm="ngForm">
+          <h2>Libro {{ currentIndex + 1 }} di {{ booksCount }}</h2>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Nome libro</mat-label>
+            <input matInput required #name="ngModel" [(ngModel)]="currentBook.name" name="name">
+            <mat-error *ngIf="name.invalid && name.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Scaffale</mat-label>
+            <input matInput #scaffale="ngModel" [(ngModel)]="currentBook.scaffale" name="scaffale">
+            <mat-error *ngIf="scaffale.invalid && scaffale.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Bancale</mat-label>
+            <input matInput #bancale="ngModel" [(ngModel)]="currentBook.bancale" name="bancale">
+            <mat-error *ngIf="bancale.invalid && bancale.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>X</mat-label>
+            <input matInput required #x="ngModel" type="number" [(ngModel)]="currentBook.x" name="x">
+            <mat-error *ngIf="x.invalid && x.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Y</mat-label>
+            <input matInput required #y="ngModel" type="number" [(ngModel)]="currentBook.y" name="y">
+            <mat-error *ngIf="y.invalid && y.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Lato</mat-label>
+            <mat-select [(ngModel)]="currentBook.lato" name="lato">
+              <mat-option value="dx">Destra</mat-option>
+              <mat-option value="sx">Sinistra</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Compagnia</mat-label>
+            <mat-select required name="company" [(ngModel)]="currentBook.company" #company="ngModel" >
+              <mat-option *ngFor="let company of companies" [value]="company.id" >{{ company.name }}</mat-option>
+            </mat-select>
+            <mat-error *ngIf="company.invalid && company.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <div class="actions">
+            <button mat-button (click)="close()">Chiudi</button>
+            <button
+              mat-raised-button
+              color="primary"
+              type="button"
+              *ngIf="currentIndex === booksCount - 1"
+              [disabled]="!isCurrentBookValid()"
+              (click)="saveBooks()">
+              Salva
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div *ngIf="step === 3" class="loading-container">
+        <div class="loader"></div>
+        <h2>Sto caricando i record dei nuovi libri</h2>
+        <p>Attendi qualche istante…</p>
+      </div>
+
     </div>
 
-    <div *ngIf="step === 3" class="loading-container">
-      <div class="loader"></div>
-      <h2>Sto caricando i record dei nuovi libri</h2>
-      <p>Attendi qualche istante…</p>
+    <!-- Freccia destra -->
+    <div class="col arrow-col">
+      <button
+        class="arrow"
+        *ngIf="step === 2 && currentIndex < booksCount - 1"
+        [disabled]="!canGoNext()"
+        (click)="nextBook()">
+        ›
+      </button>
     </div>
-
   </div>
-
-  <!-- Freccia destra -->
-  <button
-    class="arrow right"
-    *ngIf="step === 2 && currentIndex < booksCount - 1"
-    [disabled]="!canGoNext()"
-    (click)="nextBook()">
-    ›
-  </button>
-
 </div>
 
 <!-- ===================== MODALE POSIZIONE PERGAMENA ===================== -->

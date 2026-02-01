@@ -28,6 +28,7 @@ export class SearchPositionComponent implements OnInit {
   inputPage: number = 1;
 
   currentUser: UserModel | undefined;
+  showPage:boolean = false
   public rows = { page: 1, per_page: 4, results: [] as any, total: 0, pages: 0 };
   search: any = {};
   pergamenaVisible: boolean = false;
@@ -92,6 +93,7 @@ export class SearchPositionComponent implements OnInit {
   }
 
   close(){
+    this.booksService.clearBooks()
     this.showModal = false
     this.booksCount = 1
   }
@@ -214,6 +216,12 @@ export class SearchPositionComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUserFromLocalStorage();
+    if (this.currentUser?.company?.name === 'Mts'){
+      this.showPage = true
+    } else {
+      alert('NON SEI AUTORIZZATO AD ENTRARE I QUESTA PAGINA!')
+      this.router.navigate(['/client'])
+    }
 
     this.getBooks();
     this.getCompany()

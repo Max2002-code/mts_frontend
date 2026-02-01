@@ -20,7 +20,6 @@ export class CoreLayoutComponent implements OnInit{
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUserFromLocalStorage()
-    console.log(this.currentUser)
 
     this.http.getNotifications(true).subscribe(data=>{
       this.unread_count = data['unread']

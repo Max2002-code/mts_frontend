@@ -20,6 +20,7 @@ import { CorePagesRoutingModule } from './core-routing.module';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { PaginatorComponent } from './search-position/paginator/paginator.component';
 import { NotificaComponent } from './notifica/notifica.component';
+import { AdminUsersComponent } from './admin-users/users-management.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { NotificaComponent } from './notifica/notifica.component';
     SearchPositionComponent,
     HomeComponent,
     PaginatorComponent,
-    NotificaComponent
+    NotificaComponent,
+    AdminUsersComponent,
   ],
   imports: [
     CorePagesRoutingModule,

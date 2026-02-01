@@ -17,6 +17,7 @@
                 <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/home" routerLinkActive="active-link">Home</button>
                 <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/search" routerLinkActive="active-link">Cerca Libro</button>
                 <button *ngIf="currentUser?.company?.name === 'Mts'" mat-button routerLink="/movements" routerLinkActive="active-link">Tracciamento</button>
+                <button *ngIf="currentUser?.company?.name !== 'Mts'" mat-button routerLink="/client" routerLinkActive="active-link">Home</button>
                 <button class="logout-btn" (click)="logout()">
                     <i class="fa-solid fa-right-from-bracket"></i>
                     Logout

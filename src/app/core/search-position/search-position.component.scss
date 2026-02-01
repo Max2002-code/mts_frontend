@@ -20,8 +20,16 @@
   background: rgba(0,0,0,0.5);
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
   z-index: 1000;
+}
+
+.overlay-grid{
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
 }
 
 .modal {
@@ -362,4 +370,18 @@ form {
       }
     }
   }
+}
+
+.col{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.arrow {
+  font-size: 200px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
 }

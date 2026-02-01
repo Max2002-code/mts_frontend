@@ -1,4 +1,4 @@
-<div class="home-container">
+<div class="home-container" *ngIf="showPage">
 
   <!-- HERO -->
   <section class="hero">
@@ -52,12 +52,12 @@
 
   <!-- ULTIME ATTIVITÀ -->
   <section class="activity">
-    <h3>🕒 Ultime attività</h3>
-    <mat-list>
-      <mat-list-item>📦 <strong>1984</strong> → Arrivato oggi</mat-list-item>
-      <mat-list-item>📍 <strong>Harry Potter</strong> → Spostato in settore B</mat-list-item>
-      <mat-list-item>📖 <strong>Il Piccolo Principe</strong> → In prestito</mat-list-item>
-    </mat-list>
+    <mat-card class="action-card" (click)="goToAdminUsers()">
+      <mat-icon>person</mat-icon>
+      <h3>Gestistci utenti</h3>
+      <p>Pannello per gestire tutti gli utenti registrati</p>
+      <button mat-raised-button color="primary">Vai</button>
+    </mat-card>
   </section>
 
 </div>

@@ -1,0 +1,310 @@
+<div class="admin-page" *ngIf="authorization" >
+
+  <h1>Gestione Utenti</h1>
+  <p class="subtitle">
+    Gestisci tutti gli utenti in un unico posto. Controlla gli accessi, assegna i ruoli e monitora l’attività sulla tua piattaforma.
+  </p>
+
+  <div class="toolbar">
+    <input type="text" placeholder="Search" [(ngModel)]="filter_name" class="search">
+
+    <select [(ngModel)]="filter_role" >
+      <option value="" >Role</option>
+      <option value="admin" >Admin</option>
+      <option value="superuser" >SuperUser</option>
+      <option value="viewer" >Viewer</option>
+    </select>
+
+    <select [(ngModel)]="filter_is_active" >
+      <option value="">Status</option>
+      <option value="true">Active</option>
+      <option value="false">Inactive</option>
+    </select>
+
+    <select [(ngModel)]="filter_company" >
+      <option value="">Company</option>
+      <option *ngFor="let comp of companies" [value]="comp.id">{{ comp.name }}</option>
+    </select>
+
+    <button class="btn outline" (click)="filterUsers()" >Filtra</button>
+    <button class="btn outline" *ngIf="filtered" (click)="resetFilter()" >X</button>
+
+    <div class="spacer"></div>
+
+    <button class="btn primary" (click)="openModalUser()">+ Add User</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Username</th>
+        <th>Status</th>
+        <th>Role</th>
+        <th>Company</th>
+        <th>Joined Date</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let u of rows.results">
+        <!--<td><input type="checkbox"></td>-->
+        <td class="user">
+          {{ u.full_name }}
+        </td>
+        <td>{{ u.email }}</td>
+        <td>{{ u.username }}</td>
+        <td><span class="status active" *ngIf="u.is_active">Attivo</span>
+            <span class="status inactive" *ngIf="!u.is_active">Non Attivo</span>
+        </td>
+        <td>{{ u.user_type }}</td>
+        <td>{{ u.company.name }}</td>
+        <td>{{ formatted_date(u.date_joined) }}</td>
+        <td class="actions">
+          <button [disabled]="!u.is_active" (click)="openDetailModal(u)" >✏️</button>
+          <button *ngIf="u.is_active" (click)="openDeactivateModal(u)" >🗑️</button>
+          <button *ngIf="!u.is_active" (click)="openReactivateModal(u)" >🔄</button>
+        </td>
+      </tr>
+      <!-- duplica righe -->
+    </tbody>
+  </table>
+
+  <div class="footer">
+    Rows per page: {{ rows.per_page }}
+
+    <div class="pagination">
+      <app-paginator
+        [currentPage]="rows.page"
+        [totalPages]="rows.pages"
+        [pageSize]="rows.per_page"
+        (pageChange)="onFooterPageChange($event)"
+      ></app-paginator>
+    </div>
+  </div>
+</div>
+
+<!-- OVERLAY -->
+<div class="overlay" *ngIf="showDetailUser">
+
+  <div class="user-modal" *ngIf="!nextStep">
+
+    <div class="modal-header">
+      <h2>Dettaglio Utente</h2>
+      <button class="close-btn" (click)="closeDetailModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <div class="profile">
+        <div class="avatar">
+          <mat-icon>account_circle</mat-icon>
+        </div>
+        <div>
+          <h3>{{ selectedUser.full_name }}</h3>
+          <p *ngIf="!editMode" >{{ selectedUser.email }}</p>
+          <input *ngIf="editMode" type="email" [placeholder]="selectedUser.email" [(ngModel)]="new_email" >
+        </div>
+      </div>
+
+      <div class="details-grid">
+        <div><strong>Username:</strong> {{ selectedUser.username }}</div>
+        <div>
+          <strong>Ruolo:</strong>
+          <span *ngIf="!editMode" >{{ selectedUser.user_type }}</span>
+          <select *ngIf="editMode" [(ngModel)]="new_role">
+            <option *ngFor="let role of roles" [value]="role.value">{{ role.value }}</option>
+          </select>
+        </div>
+        <div>
+          <strong>Status:</strong>
+          <span *ngIf="selectedUser.is_active"> Attivo</span>
+          <span *ngIf="!selectedUser.is_active"> Non attivo</span>
+        </div>
+        <div><strong>Data registrazione:</strong> {{ formatted_date(selectedUser.date_joined) }}</div>
+        <div><strong>ID:</strong> {{ selectedUser.id }}</div>
+        <div><button *ngIf="selectedUser.id !== currentUser?.id" (click)="resetPassword()" class="btn primary">Reset Password</button></div>
+      </div>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn outline" *ngIf="!editMode" (click)="closeDetailModal()">Chiudi</button>
+      <button class="btn primary" *ngIf="!editMode" (click)="openEditMode()">Modifica</button>
+      <button class="btn outline" *ngIf="editMode" (click)="cancelEditMode()">Annulla</button>
+      <button class="btn success" *ngIf="editMode" (click)="saveEditMode()">Salva</button>
+    </div>
+
+  </div>
+  <div class="user-modal" *ngIf="nextStep">
+
+    <div class="modal-header">
+      <h2>Password resettata correttamente</h2>
+      <button class="close-btn" (click)="closeUserModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <div class="copy-bar">
+        <p>La nuova password è stata generata correttamente.</p>
+        <span class="copy-text" >{{ tempPassword }}</span>
+
+        <button class="copy-btn" (click)="copyToClipboard(tempPassword)" >
+          <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
+        </button>
+      </div>
+      <p>
+        Al primo accesso verrà richiesto di impostarne una personale.
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- MODALE AZIONI STATO -->
+<div class="overlay" *ngIf="showUserModal">
+
+  <div class="confirm-modal">
+
+    <div class="modal-header">
+      <h2>{{ modalMode === 'deactivate' ? 'Conferma disattivazione' : 'Conferma Riattivazione' }}</h2>
+      <button class="close-btn" (click)="closeUserModal()">✕</button>
+    </div>
+
+    <div class="modal-body">
+      <ng-container *ngIf="modalMode === 'deactivate'">
+        <p>
+          Per ragioni di sicurezza, questo utente verrà
+          <strong>disattivato</strong> e non eliminato definitivamente.
+        </p>
+        <p>
+          Sarà possibile riattivarlo in qualsiasi momento dal pannello di amministrazione.
+        </p>
+      </ng-container>
+      <ng-container *ngIf="modalMode === 'activate'">
+        <p>
+          Possiamo dare il bentornato a
+          <strong>{{ selectedUser.username }}</strong>!
+        </p>
+        <p>
+          L’utente verrà riattivato correttamente.
+        </p>
+      </ng-container>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn outline" (click)="closeUserModal()">
+        Annulla
+      </button>
+      <button class="btn" [ngClass]="modalMode === 'deactivate' ? 'danger' : 'success' " (click)="confirmAction()" >
+        {{ modalMode === 'deactivate' ? 'Disattiva Utente' : 'Riattiva Utente' }}
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="overlay" *ngIf="showCreateUserModal">
+
+  <div class="user-modal" *ngIf="!showCreatePassword">
+
+    <div class="modal-header">
+      <h2>Nuovo Utente</h2>
+      <button class="close-btn" (click)="closeCreateUser()">✕</button>
+    </div>
+
+    <div class="modal-body">
+
+      <form #userForm="ngForm">
+        <div class="form-grid">
+          <div>
+            <label>Username *</label>
+            <input type="text" name="username" required [(ngModel)]="new_user.username" #username="ngModel">
+            <small class="error" *ngIf="username.invalid && username.touched">
+              Campo obbligatorio
+            </small>
+          </div>
+
+          <div>
+            <label>Email</label>
+            <input type="email" name="email" [(ngModel)]="new_user.email">
+          </div>
+
+          <div>
+            <label>Nome completo *</label>
+            <input type="text" name="full_name" required [(ngModel)]="new_user.full_name" #full_name="ngModel">
+            <small class="error" *ngIf="full_name.invalid && full_name.touched">
+              Campo obbligatorio
+            </small>
+          </div>
+
+          <div>
+            <label>Ruolo *</label>
+            <select [(ngModel)]="new_user.user_type" name="user_type" required #user_type="ngModel">
+              <option value="">Seleziona ruolo</option>
+              <option *ngFor="let role of roles" [value]="role.value">
+                {{ role.label }}
+              </option>
+            </select>
+            <small class="error" *ngIf="user_type.invalid && user_type.touched">
+              Campo obbligatorio
+            </small>
+          </div>
+
+          <div>
+            <label>Azienda *</label>
+            <select [(ngModel)]="new_user.company" name="company" required #company="ngModel">
+              <option value="">Seleziona azienda</option>
+              <option *ngFor="let c of companies" [value]="c.id">
+                {{ c.name }}
+              </option>
+            </select>
+            <small class="error" *ngIf="company.invalid && company.touched">
+              Campo obbligatorio
+            </small>
+          </div>
+
+        </div>
+      </form>
+
+      <p class="hint">
+        Verrà generata una password temporanea.
+      </p>
+
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn outline" (click)="closeCreateUser()">
+        Annulla
+      </button>
+      <button class="btn primary" [disabled]="userForm.invalid" (click)="createUser()">
+        Crea utente
+      </button>
+    </div>
+
+  </div>
+  <div class="password-box" *ngIf="showCreatePassword">
+    <div class="header">
+      <h4>Credenziali di accesso</h4>
+      <button class="close-btn" (click)="closeCreateUser()">✕</button>
+    </div>
+
+    <div class="copy-bar">
+      <div class="copy-left">
+        <strong>Password temporanea</strong>
+        <span class="copy-text"> <strong>{{ createPassword }}</strong></span>
+      </div>
+
+      <button class="copy-btn" (click)="copyToClipboard(createPassword)">
+        <mat-icon>{{ copied ? 'check' : 'content_copy' }}</mat-icon>
+      </button>
+    </div>
+
+    <p class="hint warning">
+      Questa password verrà mostrata <strong>una sola volta</strong>.
+      Comunicala all’utente in modo sicuro.
+    </p>
+
+  </div>
+
+</div>

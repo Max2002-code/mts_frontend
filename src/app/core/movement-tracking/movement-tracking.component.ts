@@ -3,6 +3,7 @@ import { Movement } from 'src/app/models/movement.model';
 import { UserModel } from 'src/app/models/user.model';
 import { AuthService } from 'src/app/shared/auth/auth.service';
 import { ReportService } from 'src/app/services/report.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-movement-tracking',
@@ -11,6 +12,7 @@ import { ReportService } from 'src/app/services/report.service';
 })
 export class MovementTrackingComponent implements OnInit {
   currentUser: UserModel | undefined
+  showPage:boolean = false
   public rows = { page: 1, per_page: 4, results: [] as any, total: 0, pages: 0 };
   pageSize: number = 20;
   currentPage: number = 0;
@@ -21,7 +23,7 @@ export class MovementTrackingComponent implements OnInit {
   selectedBook: any
   book_moves:any
 
-  constructor(private authService:AuthService, private http:ReportService) {}
+  constructor(private authService:AuthService, private http:ReportService, private router:Router) {}
 
   datatablePage(pageInfo: { count?: number; pageSize?: number; limit?: number; offset?: number }) {
     this.inputPage = (pageInfo.offset ?? 0) + 1;
@@ -50,6 +52,13 @@ export class MovementTrackingComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentUser = this.authService.getUserFromLocalStorage()
+
+    if (this.currentUser?.company?.name === 'Mts'){
+      this.showPage = true
+    } else {
+      alert('NON SEI AUTORIZZATO AD ENTRARE I QUESTA PAGINA!')
+      this.router.navigate(['/client'])
+    }
 
     this.getMovements()
   }
