@@ -265,5 +265,4 @@ export class AdminUsersComponent implements OnInit {
     this.getUsers()
     this.getRoles()
   }
-  
 }
