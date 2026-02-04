@@ -1,4 +1,4 @@
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, Observable, Subject, takeUntil, throwError } from 'rxjs';
@@ -41,12 +41,13 @@ export class ApiInterceptionService implements HttpInterceptor, OnDestroy{
     }
 
     return next.handle(req).pipe(
-      catchError(err => {
-        if(err.status  === 401 && authToken){
+      catchError(((error: HttpErrorResponse) => {
+        if (error.status === 401){
           this.authService.logout()
         }
-        return throwError(() => err)
-      })
+        return throwError(() => error)
+      }
+      ))
     )
   }
 
