@@ -194,11 +194,14 @@
   <div class="pergamena-rotolo" (click)="$event.stopPropagation()">
     <h2>📍 Posizione libro</h2>
     <p><strong>Cliente:</strong> {{ result.company.name }}</p>
-    <p *ngIf="result.scaffale" ><strong>Scaffale:</strong> {{ result.scaffale }}</p>
-    <p *ngIf="result.scaffale && result.ripiano" ><strong>Ripiano:</strong> {{ result.ripiano }} </p>
-    <p *ngIf="result.scaffale && result.ripiano" > <strong>Lato: {{ result.lato }} </strong> </p>
-    <p *ngIf="result.bancale" ><strong>Bancale:</strong> {{ result.bancale }}</p>
-    <p *ngIf="result.bancale && result.scatola" ><strong>Scatolone:</strong> {{ result.scatola }} </p>
+    <div class="scaffale" *ngIf="result.scaffale && result.ripiano" >
+      <p><strong>Scaffale:</strong> {{ result.scaffale }} - {{ result.ripiano }}</p>
+      <p> <strong>Lato: {{ result.lato }} </strong> </p>
+    </div>
+    <div class="bancale" *ngIf="result.bancale && result.scatola" >
+      <p><strong>Bancale:</strong> {{ result.bancale }}</p>
+      <p><strong>Scatolone:</strong> {{ result.scatola }} </p>
+    </div>
     <button (click)="pergamenaVisible=false">Chiudi</button>
   </div>
 </div>
