@@ -195,7 +195,8 @@
     <h2>📍 Posizione libro</h2>
     <p><strong>Cliente:</strong> {{ result.company.name }}</p>
     <p *ngIf="result.scaffale" ><strong>Scaffale:</strong> {{ result.scaffale }}</p>
-    <p *ngIf="result.scaffale && result.ripiano" ><strong>Ripiano:</strong> {{ result.ripiano }} <strong>Lato: {{ result.lato }} </strong> </p>
+    <p *ngIf="result.scaffale && result.ripiano" ><strong>Ripiano:</strong> {{ result.ripiano }} </p>
+    <p *ngIf="result.scaffale && result.ripiano" > <strong>Lato: {{ result.lato }} </strong> </p>
     <p *ngIf="result.bancale" ><strong>Bancale:</strong> {{ result.bancale }}</p>
     <p *ngIf="result.bancale && result.scatola" ><strong>Scatolone:</strong> {{ result.scatola }} </p>
     <button (click)="pergamenaVisible=false">Chiudi</button>
