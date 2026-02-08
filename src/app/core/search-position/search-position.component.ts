@@ -92,8 +92,10 @@ export class SearchPositionComponent implements OnInit {
     this.step = 1
   }
 
-  close(){
-    this.booksService.clearBooks()
+  close(clear=false){
+    if (clear){
+      this.booksService.clearBooks()
+    }
     this.showModal = false
     this.booksCount = 1
   }
@@ -178,18 +180,13 @@ export class SearchPositionComponent implements OnInit {
 
     if (!b) return false;
 
-    const requiredFilled =
-      b.name &&
-      b.x !== null &&
-      b.y !== null &&
-      b.company &&
-      b.lato;
+    const requiredFilled_scaffale = b.name && b.position && b.scaffale && b.ripiano && b.company && b.lato;
 
-    const hasLocation =
-      (b.scaffale && b.scaffale.trim()) ||
-      (b.bancale && b.bancale.trim());
+    const requiredFilled_bancone = b.name && b.position && b.bancale && b.scatola && b.company
 
-    return !!(requiredFilled && hasLocation);
+    const hasLocation = (b.scaffale && b.scaffale.trim()) || (b.bancale && b.bancale.trim());
+
+    return !!((requiredFilled_bancone || requiredFilled_scaffale) && hasLocation);
   }
 
   resumeBooks(state: {targetCount: number, books:any[]}){
@@ -219,8 +216,7 @@ export class SearchPositionComponent implements OnInit {
     if (this.currentUser?.company?.name === 'Mts'){
       this.showPage = true
     } else {
-      alert('NON SEI AUTORIZZATO AD ENTRARE I QUESTA PAGINA!')
-      this.router.navigate(['/client'])
+      this.router.navigate(['/no-auth'])
     }
 
     this.getBooks();

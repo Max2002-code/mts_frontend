@@ -21,7 +21,7 @@
       </div>
 
       <div class="actions">
-        <a class="btn btn--gold" (click)="goToHome()">Torna alla Home</a>
+        <a class="btn btn--gold" *ngIf="currentUser" (click)="goToHome()">Torna alla Home</a>
         <button class="btn btn--ghost" type="button" (click)="goBack()">
           Torna indietro
         </button>
@@ -31,11 +31,5 @@
         Se pensi sia un errore, prova a ricontrollare l’URL o contatta l’assistenza.
       </p>
     </section>
-
-    <!--<footer class="sheet__footer" aria-hidden="true">
-      <div class="wax"></div>
-      <div class="tear tear--left"></div>
-      <div class="tear tear--right"></div>
-    </footer>-->
   </main>
 </div>

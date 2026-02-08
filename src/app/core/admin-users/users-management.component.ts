@@ -257,8 +257,7 @@ export class AdminUsersComponent implements OnInit {
     if (this.currentUser){
       if (!['superuser', 'admin'].includes(this.currentUser?.user_type)) {
         this.authorization = false
-        alert('NON SEI SUTORIZZATO A VISUALIZZARE QUESTA PAGINA')
-        this.router.navigate(['/client'])
+        this.router.navigate(['/no-auth'])
       }
     }
 

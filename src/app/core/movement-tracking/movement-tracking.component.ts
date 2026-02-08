@@ -56,8 +56,7 @@ export class MovementTrackingComponent implements OnInit {
     if (this.currentUser?.company?.name === 'Mts'){
       this.showPage = true
     } else {
-      alert('NON SEI AUTORIZZATO AD ENTRARE I QUESTA PAGINA!')
-      this.router.navigate(['/client'])
+      this.router.navigate(['/no-auth'])
     }
 
     this.getMovements()

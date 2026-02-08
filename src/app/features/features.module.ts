@@ -6,19 +6,23 @@ import { LogoutComponent } from './logout/logout.component';
 import { ErrorComponent } from './error/error.component';
 import { CommonModule } from "@angular/common";
 import { ChangePwComponent } from "../client/change-pw/change-pw.component";
+import { UnauthorizedComponent } from './unauthorized/unauthorized.component';
+import { MatCardModule } from "@angular/material/card";
 
 @NgModule({
   declarations: [
     LoginComponent,
     LogoutComponent,
     ErrorComponent,
-    ChangePwComponent
+    ChangePwComponent,
+    UnauthorizedComponent
   ],
   imports: [
     FormsModule,
     FeaturesPagesRoutingModule,
     ReactiveFormsModule,
     CommonModule,
+    MatCardModule,
   ],
   exports: [
     

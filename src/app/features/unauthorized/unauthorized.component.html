@@ -1,0 +1,63 @@
+<div class="error-wrap">
+  <div class="bg-ornaments"></div>
+
+  <main class="sheet" role="main" aria-labelledby="errTitle">
+    <header class="sheet__header">
+      <div class="crest" aria-hidden="true">
+        <span class="crest__dot"></span>
+      </div>
+
+      <p class="kicker">Archivio MTS</p>
+
+      <h1 id="errTitle" class="title">
+        Accesso negato
+      </h1>
+
+      <p class="subtitle">
+        Non disponi delle autorizzazioni necessarie per consultare questa sezione
+        dell’archivio.
+      </p>
+    </header>
+
+    <section class="sheet__body">
+      <div class="status">
+        <span class="status__code">403</span>
+        <span class="status__label">Forbidden</span>
+      </div>
+
+      <div class="actions">
+        <a
+          class="btn btn--gold"
+          *ngIf="!currentUser"
+          routerLink="/login">
+          Accedi
+        </a>
+
+        <a
+          class="btn btn--gold"
+          *ngIf="currentUser"
+          (click)="goToHome()">
+          Torna alla Home
+        </a>
+
+        <button
+          class="btn btn--ghost"
+          type="button"
+          (click)="goBack()">
+          Torna indietro
+        </button>
+      </div>
+
+      <p class="hint">
+        Se ritieni che l’accesso ti spetti, contatta l’amministratore del sistema
+        o accedi con un account autorizzato.
+      </p>
+    </section>
+
+    <footer class="sheet__footer" aria-hidden="true">
+      <div class="wax"></div>
+      <div class="tear tear--left"></div>
+      <div class="tear tear--right"></div>
+    </footer>
+  </main>
+</div>

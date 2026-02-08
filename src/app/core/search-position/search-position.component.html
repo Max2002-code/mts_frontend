@@ -114,35 +114,43 @@
           </mat-form-field>
 
           <mat-form-field appearance="fill" style="width:100%">
+            <mat-label>Posizione</mat-label>
+            <mat-select required [(ngModel)]="currentBook.position" name="position">
+              <mat-option value="scaffale">Scaffale</mat-option>
+              <mat-option value="bancale">Bancone</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="currentBook.position === 'scaffale'" appearance="fill" style="width:100%">
             <mat-label>Scaffale</mat-label>
-            <input matInput #scaffale="ngModel" [(ngModel)]="currentBook.scaffale" name="scaffale">
+            <input required matInput #scaffale="ngModel" [(ngModel)]="currentBook.scaffale" name="scaffale">
             <mat-error *ngIf="scaffale.invalid && scaffale.touched">Campo Obligatorio</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>Bancale</mat-label>
-            <input matInput #bancale="ngModel" [(ngModel)]="currentBook.bancale" name="bancale">
-            <mat-error *ngIf="bancale.invalid && bancale.touched">Campo Obligatorio</mat-error>
+          <mat-form-field *ngIf="currentBook.position === 'scaffale'" appearance="fill" style="width:100%">
+            <mat-label>Ripiano</mat-label>
+            <input required matInput #ripiano="ngModel" [(ngModel)]="currentBook.ripiano" name="scaffale">
+            <mat-error *ngIf="ripiano.invalid && ripiano.touched">Campo Obligatorio</mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>X</mat-label>
-            <input matInput required #x="ngModel" type="number" [(ngModel)]="currentBook.x" name="x">
-            <mat-error *ngIf="x.invalid && x.touched">Campo Obligatorio</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" style="width:100%">
-            <mat-label>Y</mat-label>
-            <input matInput required #y="ngModel" type="number" [(ngModel)]="currentBook.y" name="y">
-            <mat-error *ngIf="y.invalid && y.touched">Campo Obligatorio</mat-error>
-          </mat-form-field>
-
-          <mat-form-field appearance="fill" style="width:100%">
+          <mat-form-field *ngIf="currentBook.position === 'scaffale'" appearance="fill" style="width:100%">
             <mat-label>Lato</mat-label>
-            <mat-select [(ngModel)]="currentBook.lato" name="lato">
+            <mat-select required [(ngModel)]="currentBook.lato" name="lato">
               <mat-option value="dx">Destra</mat-option>
               <mat-option value="sx">Sinistra</mat-option>
             </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="currentBook.position === 'bancale'" appearance="fill" style="width:100%">
+            <mat-label>Bancale</mat-label>
+            <input required matInput #bancale="ngModel" [(ngModel)]="currentBook.bancale" name="scaffale">
+            <mat-error *ngIf="bancale.invalid && bancale.touched">Campo Obligatorio</mat-error>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="currentBook.position === 'bancale'" appearance="fill" style="width:100%">
+            <mat-label>Scatolone</mat-label>
+            <input required matInput #scatolone="ngModel" [(ngModel)]="currentBook.scatola" name="bancale">
+            <mat-error *ngIf="scatolone.invalid && scatolone.touched">Campo Obligatorio</mat-error>
           </mat-form-field>
 
           <mat-form-field appearance="fill" style="width:100%">
@@ -154,7 +162,8 @@
           </mat-form-field>
 
           <div class="actions">
-            <button mat-button (click)="close()">Chiudi</button>
+            <button mat-button (click)="close(true)">Chiudi</button>
+            <button mat-button (click)="close(false)">Riprendi successivamente</button>
             <button
               mat-raised-button
               color="primary"
