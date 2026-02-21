@@ -201,7 +201,7 @@
 <!-- ===================== MODALE POSIZIONE PERGAMENA ===================== -->
 <div class="full-pergamena" *ngIf="pergamenaVisible" (click)="pergamenaVisible = false">
   <div class="pergamena-rotolo" (click)="$event.stopPropagation()">
-    <h2>📍 Posizione libro</h2>
+    <h2>📍 {{ result.name }}</h2>
     <p><strong>Cliente:</strong> {{ result.company.name }}</p>
     <div class="scaffale" *ngIf="result.scaffale && result.ripiano" >
       <p><strong>Scaffale:</strong> {{ result.scaffale }} - {{ result.ripiano }}</p>

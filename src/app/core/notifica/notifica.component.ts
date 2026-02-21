@@ -25,7 +25,7 @@ export class NotificaComponent implements OnInit {
   // Determina la classe dell’icona in base al tipo
   getIconClass(tipo: string): string {
     switch (tipo) {
-      case 'accettato': return 'icon-success';
+      case 'completato': return 'icon-success';
       case 'rifiutato': return 'icon-error';
       case 'info': return 'icon-info';
       default: return 'icon-default';

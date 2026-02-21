@@ -32,7 +32,7 @@
           </div>
 
           <button
-            *ngIf="book.book_status === 'ricevuto'"
+            *ngIf="book.book_status === 'consegnato'"
             class="btn-deliver"
             (click)="deliverBook(book, 'magazzino')"
           >
@@ -69,7 +69,7 @@
 
           <button
             class="btn-request"
-            (click)="requestBookFromWarehouse(book, 'ricevuto')"
+            (click)="requestBookFromWarehouse(book, 'consegnato')"
           >
             Richiedi
           </button>

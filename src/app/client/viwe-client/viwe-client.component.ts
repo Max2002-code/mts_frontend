@@ -116,91 +116,6 @@ export class ViweClientComponent implements OnInit {
     this.getClientBooks()
   }
 
-  /* ==================== CARICAMENTO DATI ==================== */
-  loadUserBooks(): void {
-    const myBooks = [
-      'Harry Potter', '1984', 'Angular', 'Clean Code',
-      'Design Patterns', 'Il Signore degli Anelli',
-      'Dune', 'Neuromancer'
-    ];
-
-    this.userBooks = myBooks.map(title => ({ title, status: 'in possesso' }));
-    this.filteredUserBooks = [...this.userBooks];
-  }
-
-  /* ==================== AGGIORNA INPUT PAGINA ==================== */
-  updatePageInputs(): void {
-    this.userPageInput = this.userCurrentPage + 1;
-    this.availablePageInput = this.availableCurrentPage + 1;
-    this.requestedPageInput = this.requestedCurrentPage + 1;
-  }
-
-  /* ==================== TUOI LIBRI ==================== */
-  get pagedUserBooks(): UserBook[] {
-    const start = this.userCurrentPage * this.userPageSize;
-    return this.filteredUserBooks.slice(start, start + this.userPageSize);
-  }
-
-  get userTotalPages(): number {
-    return Math.max(Math.ceil(this.filteredUserBooks.length / this.userPageSize), 1);
-  }
-
-  userNextPage(): void {
-    if (this.userCurrentPage < this.userTotalPages - 1) {
-      this.userCurrentPage++;
-      this.userPageInput = this.userCurrentPage + 1;
-    }
-  }
-
-  userPrevPage(): void {
-    if (this.userCurrentPage > 0) {
-      this.userCurrentPage--;
-      this.userPageInput = this.userCurrentPage + 1;
-    }
-  }
-
-  setUserPage(): void {
-    const page = this.userPageInput - 1;
-    if (page >= 0 && page < this.userTotalPages) {
-      this.userCurrentPage = page;
-    } else {
-      this.userPageInput = this.userCurrentPage + 1;
-    }
-  }
-
-  /* ==================== MAGAZZINO ==================== */
-  get pagedAvailableBooks(): string[] {
-    const start = this.availableCurrentPage * this.availablePageSize;
-    return this.filteredAvailableBooks.slice(start, start + this.availablePageSize);
-  }
-
-  get availableTotalPages(): number {
-    return Math.max(Math.ceil(this.filteredAvailableBooks.length / this.availablePageSize), 1);
-  }
-
-  availableNextPage(): void {
-    if (this.availableCurrentPage < this.availableTotalPages - 1) {
-      this.availableCurrentPage++;
-      this.availablePageInput = this.availableCurrentPage + 1;
-    }
-  }
-
-  availablePrevPage(): void {
-    if (this.availableCurrentPage > 0) {
-      this.availableCurrentPage--;
-      this.availablePageInput = this.availableCurrentPage + 1;
-    }
-  }
-
-  setAvailablePage(): void {
-    const page = this.availablePageInput - 1;
-    if (page >= 0 && page < this.availableTotalPages) {
-      this.availableCurrentPage = page;
-    } else {
-      this.availablePageInput = this.availableCurrentPage + 1;
-    }
-  }
-
   /* ==================== AZIONI ==================== */
   deliverBook(book: any, type_move:string): void {
     this.http.postNewOrderBook(book.id, type_move).subscribe({
@@ -228,66 +143,8 @@ export class ViweClientComponent implements OnInit {
     })
   }
 
-  /* ==================== DASHBOARD RICHIESTE ==================== */
-  get requestedBooks(): UserBook[] {
-    return this.userBooks.filter(b => b.status === 'richiesto');
-  }
-
-  get pagedRequestedBooks(): UserBook[] {
-    const start = this.requestedCurrentPage * this.requestedPageSize;
-    return this.requestedBooks.slice(start, start + this.requestedPageSize);
-  }
-
-  get requestedTotalPages(): number {
-    return Math.max(Math.ceil(this.requestedBooks.length / this.requestedPageSize), 1);
-  }
-
-  requestedNextPage(): void {
-    if (this.requestedCurrentPage < this.requestedTotalPages - 1) {
-      this.requestedCurrentPage++;
-      this.requestedPageInput = this.requestedCurrentPage + 1;
-    }
-  }
-
-  requestedPrevPage(): void {
-    if (this.requestedCurrentPage > 0) {
-      this.requestedCurrentPage--;
-      this.requestedPageInput = this.requestedCurrentPage + 1;
-    }
-  }
-
-  setRequestedPage(): void {
-    const page = this.requestedPageInput - 1;
-    if (page >= 0 && page < this.requestedTotalPages) {
-      this.requestedCurrentPage = page;
-    } else {
-      this.requestedPageInput = this.requestedCurrentPage + 1;
-    }
-  }
-
   trackByTitle(index: number, book: UserBook): string {
     return book.title;
   }
-
-settingsOpen: boolean = false;
-
-toggleSettings(): void {
-  this.settingsOpen = !this.settingsOpen;
-}
-
-closeSettings(): void {
-  this.settingsOpen = false;
-}
-
-logout(): void {
-  this.authService.logout(); // se esiste
-  // oppure
-  // localStorage.clear();
-  // this.router.navigate(['/login']);
-}
-
-goToProfile(): void {
-  console.log('Vai al profilo');
-}
 
 }
